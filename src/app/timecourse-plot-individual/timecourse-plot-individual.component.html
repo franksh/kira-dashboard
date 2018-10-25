@@ -1,0 +1,5 @@
+
+<plotly-plot [data]="choroplethmode_isdistrict ? graph.datadist : graph.datahosp" [layout] = "graph.layout" [config]="{displayModeBar: false}" (click)="recieveClickEvent($event)" [useResizeHandler]="true" [style]="graph.style" ></plotly-plot>
+
+
+<div #primary class="mat-button mat-primary" style="display:none"></div>

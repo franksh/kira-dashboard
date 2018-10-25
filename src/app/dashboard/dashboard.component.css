@@ -1,0 +1,30 @@
+.map-divs {
+  margin: 8px;
+  padding: 0px;
+  float: left;
+  width: calc(70% - 240px);
+  min-width: 800px;
+}
+
+.map-card {
+  margin-bottom: 16px;
+  padding: 0;
+}
+
+.control-card {
+  margin-bottom: 8px;
+  padding: 0;
+}
+
+.map-card-content {
+  padding: 0px;
+  heigth: 40vw;
+}
+
+.side-accordion {
+  margin: 8px;
+  padding: 0px;
+  width: calc(30% + 200px);
+  min-width: 800px;
+  float: left;
+}

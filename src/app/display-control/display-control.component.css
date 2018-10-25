@@ -1,0 +1,32 @@
+
+.control-toolbar {
+  margin-left: 8px;
+  margin-right: 8px;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 80px;
+}
+
+.time-slider {
+  margin-left: 8px;
+  margin-right: 8px;
+  width: calc(100% - 600px);
+  color: #212121;
+}
+
+.elem-margin {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+
+mat-divider {
+  height: 36px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.basic-container {
+  padding: 5px;
+}

@@ -1,0 +1,36 @@
+<div class="map-divs" id="map-div">
+  <mat-card class="map-card">
+    <mat-card-content>
+      <app-map-display></app-map-display>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="control-card">
+    <app-display-control></app-display-control>
+  </mat-card>
+</div>
+
+<div class="side-accordion" id="side-accordion">
+  <mat-accordion  [multi]="true">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        Table
+      </mat-expansion-panel-header>
+        <app-table-districts></app-table-districts>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        Time Course - Aggregated
+      </mat-expansion-panel-header>
+      <app-timecourse-plot></app-timecourse-plot>
+    </mat-expansion-panel>
+
+
+      <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        Time Course - Individual
+      </mat-expansion-panel-header>
+      <app-timecourse-plot-individual></app-timecourse-plot-individual>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

@@ -1,0 +1,51 @@
+
+<div fxLayoutAlign="start stretch" fxLayoutGap="8px" class="control-toolbar">
+
+    <button class="elem-margin" mat-button (click)="initiateSubsciptions()"> RESET</button>
+    <mat-slider class="time-slider" thumbLabel min="1" max="9" step="1" [value]='displaytime.timestamp' (input)='changeTime($event.value)'></mat-slider>
+    <mat-divider [vertical]="true"></mat-divider>
+    <mat-button-toggle-group appearance="legacy" class="elem-margin"  [multiple]="true">
+      <mat-button-toggle (change)="heatmapactiveChange($event)">Heatmap</mat-button-toggle>
+      <mat-button-toggle (change)="choroplethactiveChange($event)">Choropleth</mat-button-toggle>
+      <mat-button-toggle (change)="selectactiveChange($event)">Select</mat-button-toggle>
+    </mat-button-toggle-group>
+    
+    <mat-button-toggle-group appearance="legacy" class="elem-margin" (change)="choroplethmodeChange($event)" [disabled]="(!choroplethactive && !selectactive)" mat-elevation-z0 >
+      <mat-button-toggle value='district' [disabled]="(!choroplethactive && !selectactive)" [checked]="true">Districts</mat-button-toggle>
+      <mat-button-toggle value='hospital' [disabled]="(!choroplethactive && !selectactive)">Hospitals</mat-button-toggle>
+    </mat-button-toggle-group>
+
+</div>
+
+
+<!-- 
+    
+
+
+<section class="control-toolbar">
+	<mat-checkbox class="elem-margin" (change)="heatmapactiveChange($event)" >Heatmap</mat-checkbox>
+</section>
+
+<section class="control-toolbar">
+	<mat-checkbox class="elem-margin" (change)="choroplethactiveChange($event)" >Choropleth</mat-checkbox>
+	<mat-button-toggle-group class="elem-margin" (change)="choroplethmodeChange($event)" [disabled]="!choroplethactive">
+  		<mat-button-toggle value='district' [disabled]="!choroplethactive">Districts</mat-button-toggle>
+  		<mat-button-toggle value='hospital' [disabled]="!choroplethactive">Hospitals</mat-button-toggle>
+	</mat-button-toggle-group>
+</section>
+<section class="control-toolbar">
+	<mat-checkbox class="elem-margin" (change)="selectactiveChange($event)" >Select</mat-checkbox>
+</section>
+-->
+
+<!--
+<mat-form-field>
+  <mat-select placeholder="Districts" [formControl]="dcontrol" multiple >
+  <mat-select-trigger>
+  	<div *ngIf="dcontrol.value.length === districtlist.length else elseBlock">All Districts</div>
+    <ng-template #elseBlock> {{numseldist}}: {{selecteddistricts}} </ng-template>
+  </mat-select-trigger>
+    <mat-option *ngFor="let district of districtlist" [value]="district"> {{district}} </mat-option>
+  </mat-select>
+</mat-form-field>
+-->

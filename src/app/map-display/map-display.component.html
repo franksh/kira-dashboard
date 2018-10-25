@@ -1,0 +1,17 @@
+<div class="map"
+     leaflet
+     [leafletOptions]="options"
+     defaults="defaults"
+     (leafletMapReady)="onMapReady($event)">
+     <div [leafletLayer]="basemaplayer"> </div>
+     <div *ngIf="layertoggle">
+          <div *ngFor="let l of layers" [leafletLayer]="l"></div>
+     </div>
+     <div *ngIf="!layertoggle">
+          <div *ngFor="let l of layers" [leafletLayer]="l"></div>
+     </div>
+
+</div>
+
+<div #primary class="mat-button mat-primary" style="display:none"></div>
+<div #secondary class="mat-button mat-accent" style="display:none"></div>
