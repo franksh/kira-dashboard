@@ -1,25 +1,26 @@
-import { Injectable } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { Observable, of, Subject } from "rxjs";
 
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
-import { SimSnapshot, SimulationResult } from './display-control/simulation-result';
-import {SIMMOCKUP} from './display-control/simulation-result-mockup';
-import {DisplayTime} from './display-control/display-time';
-
+import {
+  SimSnapshot,
+  SimulationResult
+} from "./display-control/simulation-result";
+// import {SIMMOCKUP} from './display-control/simulation-result-mockup';
+import { SIMMOCKUP } from "./display-control/simulation-result-mockup-2";
+import { DisplayTime } from "./display-control/display-time";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class DisplayControlService {
-
   // Observable sources
   private simresultSource = new Subject<SimulationResult>();
   private displaytimeSource = new Subject<DisplayTime>();
   private selectedsnapshotSource = new Subject<SimSnapshot>();
   private selecteddistrictsSource = new Subject<string[]>();
   private selectedhospitalsSource = new Subject<string[]>();
-
 
   private heatmapactiveSource = new Subject<boolean>();
   private choroplethactiveSource = new Subject<boolean>();
@@ -42,8 +43,9 @@ export class DisplayControlService {
   changeTime(ts: number): void {
     var time = new DisplayTime(ts);
     this.displaytimeSource.next(time);
-    this.selectedsnapshotSource.next(this.simresult.snapshots.find(snaps => snaps.timestamp === ts));
-
+    this.selectedsnapshotSource.next(
+      this.simresult.snapshots.find(snaps => snaps.timestamp === ts)
+    );
   }
 
   changeSelectedDistricts(districts: string[]): void {
@@ -59,22 +61,21 @@ export class DisplayControlService {
   }
 
   getSimulationResult(): Observable<SimulationResult> {
-  return of(this.simresult);
+    return of(this.simresult);
   }
 
   changeHeatmapactive(state: boolean) {
-    this.heatmapactiveSource.next(state)
+    this.heatmapactiveSource.next(state);
   }
   changeChoroplethactive(state: boolean) {
-    this.choroplethactiveSource.next(state)
+    this.choroplethactiveSource.next(state);
   }
   changeChoroplethmode(mode) {
-    this.choroplethmodeSource.next(mode)
+    this.choroplethmodeSource.next(mode);
   }
   changeSelectactive(state: boolean) {
-    this.selectactiveSource.next(state)
+    this.selectactiveSource.next(state);
   }
 
-  constructor() {
-  }
+  constructor() {}
 }
