@@ -1,19 +1,19 @@
-
 <div fxLayoutAlign="start stretch" fxLayoutGap="8px" class="control-toolbar">
 
-    <button class="elem-margin" mat-button (click)="initiateSubsciptions()"> RESET</button>
-    <mat-slider class="time-slider" thumbLabel min="1" max="9" step="1" [value]='displaytime.timestamp' (input)='changeTime($event.value)'></mat-slider>
-    <mat-divider [vertical]="true"></mat-divider>
-    <mat-button-toggle-group appearance="legacy" class="elem-margin"  [multiple]="true">
-      <mat-button-toggle (change)="heatmapactiveChange($event)">Heatmap</mat-button-toggle>
-      <mat-button-toggle (change)="choroplethactiveChange($event)">Choropleth</mat-button-toggle>
-      <mat-button-toggle (change)="selectactiveChange($event)">Select</mat-button-toggle>
-    </mat-button-toggle-group>
-    
-    <mat-button-toggle-group appearance="legacy" class="elem-margin" (change)="choroplethmodeChange($event)" [disabled]="(!choroplethactive && !selectactive)" mat-elevation-z0 >
-      <mat-button-toggle value='district' [disabled]="(!choroplethactive && !selectactive)" [checked]="true">Districts</mat-button-toggle>
-      <mat-button-toggle value='hospital' [disabled]="(!choroplethactive && !selectactive)">Hospitals</mat-button-toggle>
-    </mat-button-toggle-group>
+  <button class="elem-margin" mat-button (click)="initiateSubsciptions()"> RESET</button>
+  <mat-slider class="time-slider" thumbLabel [min]="mintime" [max]="maxtime" step="1" [value]='displaytime.timestamp' (input)='changeTime($event.value)'></mat-slider>
+  <mat-divider [vertical]="true"></mat-divider>
+  <mat-button-toggle-group appearance="legacy" class="elem-margin" [multiple]="true">
+    <mat-button-toggle (change)="heatmapactiveChange($event)">Heatmap</mat-button-toggle>
+    <mat-button-toggle (change)="choroplethactiveChange($event)">Choropleth</mat-button-toggle>
+    <mat-button-toggle (change)="selectactiveChange($event)">Select</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-button-toggle-group appearance="legacy" class="elem-margin" (change)="choroplethmodeChange($event)" [disabled]="(!choroplethactive && !selectactive)"
+    mat-elevation-z0>
+    <mat-button-toggle value='district' [disabled]="(!choroplethactive && !selectactive)" [checked]="true">Districts</mat-button-toggle>
+    <mat-button-toggle value='hospital' [disabled]="(!choroplethactive && !selectactive)">Hospitals</mat-button-toggle>
+  </mat-button-toggle-group>
 
 </div>
 
