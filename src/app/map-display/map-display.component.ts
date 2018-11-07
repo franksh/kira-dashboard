@@ -49,7 +49,6 @@ export class MapDisplayComponent implements AfterViewInit {
     radius: 0.02,
     maxOpacity: 0.8,
     scaleRadius: true,
-    useLocalExtrema: true,
     latField: "lat",
     lngField: "lng",
     valueField: "count"
@@ -284,7 +283,7 @@ export class MapDisplayComponent implements AfterViewInit {
       this.heatmapdata.data.push({
         lat: heatcoodinates[index][1],
         lng: heatcoodinates[index][0],
-        count: 1
+        count: 0.4
       });
     }
     this.heatmaplayer.setData(this.heatmapdata);

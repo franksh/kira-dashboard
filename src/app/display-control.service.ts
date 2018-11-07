@@ -41,6 +41,7 @@ export class DisplayControlService {
   simresult: SimulationResult = SIMMOCKUP;
 
   changeTime(ts: number): void {
+    console.log(ts);
     var time = new DisplayTime(ts);
     this.displaytimeSource.next(time);
     this.selectedsnapshotSource.next(
@@ -60,8 +61,8 @@ export class DisplayControlService {
     this.selectedhospitalsSource.next(uniqhospitals);
   }
 
-  getSimulationResult(): Observable<SimulationResult> {
-    return of(this.simresult);
+  getSimulationResult(): SimulationResult {
+    return this.simresult;
   }
 
   changeHeatmapactive(state: boolean) {
@@ -77,5 +78,7 @@ export class DisplayControlService {
     this.selectactiveSource.next(state);
   }
 
-  constructor() {}
+  constructor() {
+    console.log(SIMMOCKUP);
+  }
 }
