@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
+import {SelectionModel} from '@angular/cdk/collections';
 import { Observable, Subject, Subscription, combineLatest} from 'rxjs';
 import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material'
 
@@ -31,9 +32,10 @@ export class TableDistrictsComponent implements OnInit {
 
   simresult = SIMMOCKUP;
 
-  displayedColumns: string[] = ['district', 'cases', 'remove'];
+  displayedColumns: string[] = ['district', 'cases', "select"];
   dataSource = new MatTableDataSource<DistData>([{'district': 'Moabit', 'cases': 10},{'district': 'Eichkamp', 'cases': 5}]);
   @ViewChild(MatSort) sort: MatSort;
+  selection = new SelectionModel<DistData>(true, []);
   
   choroplethmode_isdistrict: boolean = true;
   selecteddistricts: string[];
@@ -89,5 +91,18 @@ export class TableDistrictsComponent implements OnInit {
     
   }
 
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.data.forEach(row => this.selection.select(row));
+  }
 
 }
