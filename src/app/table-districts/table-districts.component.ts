@@ -31,14 +31,16 @@ export interface DistData {
 export class TableDistrictsComponent implements OnInit {
   simresult = SIMMOCKUP;
 
-  displayedColumns: string[] = ['district', 'cases', "select"];
+  displayedColumns: string[] = ['district', 'cases', "remove"];
   dataSource = new MatTableDataSource<DistData>([{'district': 'Moabit', 'cases': 10},{'district': 'Eichkamp', 'cases': 5}]);
   @ViewChild(MatSort) sort: MatSort;
   selection = new SelectionModel<DistData>(true, []);
 
   choroplethmode_isdistrict: boolean = true;
-  selecteddistricts: string[];
-  selectedhospitals: string[];
+  lists = {
+    districts: [],
+    hospitals: []
+  }
   data = {
     districts: [],
     hospitals: []
@@ -66,6 +68,7 @@ export class TableDistrictsComponent implements OnInit {
       choroplethservice.selectedchoroplethdist$,
       displaycontrolservice.selecteddistricts$
     ).subscribe(([choropleth, districts]) => {
+      this.lists.districts = districts;
       this.data.districts = [];
       for (var i in districts) {
         this.data.districts.push(
@@ -81,6 +84,7 @@ export class TableDistrictsComponent implements OnInit {
       choroplethservice.selectedchoroplethhosp$,
       displaycontrolservice.selectedhospitals$
     ).subscribe(([choropleth, hospitals]) => {
+      this.lists.hospitals = hospitals;
       this.data.hospitals = [];
       for (var i in hospitals) {
         this.data.hospitals.push(
@@ -99,10 +103,12 @@ export class TableDistrictsComponent implements OnInit {
       .reduce((acc, value) => acc + value, 0);
   }
 
-  removeDistrict(rmdistrict: string): void {
-    var selecteddistricts_copy = _.cloneDeep(this.selecteddistricts);
-    _.remove(selecteddistricts_copy, x => x == rmdistrict);
-    this.displaycontrolservice.changeSelectedDistricts(selecteddistricts_copy);
+  removeDistrict(rm: string): void {
+    var selected_copy = this.choroplethmode_isdistrict ? _.cloneDeep(this.lists.districts) : _.cloneDeep(this.lists.hospitals);
+    _.remove(selected_copy, x => x == rm);
+    this.choroplethmode_isdistrict ? 
+      this.displaycontrolservice.changeSelectedDistricts(selected_copy) : 
+      this.displaycontrolservice.changeSelectedHospitals(selected_copy);
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
