@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject } from "rxjs";
+import { Observable, from, Subject } from "rxjs";
 
 import {
   SimSnapshot,
   SimulationResult
 } from "./display-control/simulation-result";
-import { SIMMOCKUP } from "../display-control/simulation-result-mockup-2";
+import { SIMMOCKUP } from "./display-control/simulation-result-mockup-2";
 
 
 @Injectable({
@@ -13,10 +13,8 @@ import { SIMMOCKUP } from "../display-control/simulation-result-mockup-2";
 })
 export class SimulationDataService {
 
-	private simulationresultSource = new Subject<SimulationResult>;
-	simulationresult$ = this.simulationresultSource.asObservable();
+	simulationresult$ = from([SIMMOCKUP])
 
   constructor() {
-  	this.simulationresultSource.next(SIMMOCKUP)
   }
 }

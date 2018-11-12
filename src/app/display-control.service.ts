@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, of, Subject } from "rxjs";
+import { Observable, of, Subject, combineLatest} from "rxjs";
 
 import * as _ from "lodash";
 
@@ -7,16 +7,15 @@ import {
   SimSnapshot,
   SimulationResult
 } from "./display-control/simulation-result";
-// import {SIMMOCKUP} from './display-control/simulation-result-mockup';
-import { SIMMOCKUP } from "./display-control/simulation-result-mockup-2";
 import { DisplayTime } from "./display-control/display-time";
+import {SimulationDataService} from "./simulation-data.service"
 
 @Injectable({
   providedIn: "root"
 })
 export class DisplayControlService {
+
   // Observable sources
-  private simresultSource = new Subject<SimulationResult>();
   private displaytimeSource = new Subject<DisplayTime>();
   private selectedsnapshotSource = new Subject<SimSnapshot>();
   private selecteddistrictsSource = new Subject<string[]>();
@@ -28,7 +27,6 @@ export class DisplayControlService {
   private selectactiveSource = new Subject<boolean>();
 
   // Observable streams
-  simresult$ = this.simresultSource.asObservable();
   displaytime$ = this.displaytimeSource.asObservable();
   selectedsnapshot$ = this.selectedsnapshotSource.asObservable();
   selecteddistricts$ = this.selecteddistrictsSource.asObservable();
@@ -38,7 +36,7 @@ export class DisplayControlService {
   choroplethmode$ = this.choroplethmodeSource.asObservable();
   selectactive$ = this.selectactiveSource.asObservable();
 
-  simresult: SimulationResult = SIMMOCKUP;
+  simresult: SimulationResult;
 
   changeTime(ts: number): void {
     console.log(ts);
@@ -61,10 +59,6 @@ export class DisplayControlService {
     this.selectedhospitalsSource.next(uniqhospitals);
   }
 
-  getSimulationResult(): SimulationResult {
-    return this.simresult;
-  }
-
   changeHeatmapactive(state: boolean) {
     this.heatmapactiveSource.next(state);
   }
@@ -78,7 +72,12 @@ export class DisplayControlService {
     this.selectactiveSource.next(state);
   }
 
-  constructor() {
-    console.log(SIMMOCKUP);
+  constructor(private simulationdataservice: SimulationDataService) {
+    simulationdataservice.simulationresult$.subscribe(
+      simresult => {
+        console.log(simresult);
+        this.simresult = simresult;
+      })
+
   }
 }
