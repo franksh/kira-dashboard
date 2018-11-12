@@ -39,7 +39,6 @@ export class DisplayControlService {
   simresult: SimulationResult;
 
   changeTime(ts: number): void {
-    console.log(ts);
     var time = new DisplayTime(ts);
     this.displaytimeSource.next(time);
     this.selectedsnapshotSource.next(
@@ -74,10 +73,6 @@ export class DisplayControlService {
 
   constructor(private simulationdataservice: SimulationDataService) {
     simulationdataservice.simulationresult$.subscribe(
-      simresult => {
-        console.log(simresult);
-        this.simresult = simresult;
-      })
-
+      simresult => this.simresult = simresult)
   }
 }

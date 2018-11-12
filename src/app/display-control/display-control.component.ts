@@ -17,7 +17,7 @@ import { DisplayControlService } from "../display-control.service";
 import { ChoroplethService } from "../choropleth.service";
 import { DISTRICTSDATA } from "../berlin-bezirke";
 import { HOSPITALDATA } from "../hospitals-berlin";
-import { SIMMOCKUP } from "../display-control/simulation-result-mockup-2";
+import {SimulationDataService} from "../simulation-data.service";
 
 @Component({
   selector: "app-display-control",
@@ -25,8 +25,8 @@ import { SIMMOCKUP } from "../display-control/simulation-result-mockup-2";
   styleUrls: ["./display-control.component.css"]
 })
 export class DisplayControlComponent implements OnInit {
-  maxtime = _.last(SIMMOCKUP.snapshots).timestamp;
-  mintime = _.first(SIMMOCKUP.snapshots).timestamp;
+  mintime: number = 0:
+  maxtime: number = 1;
   displaytime: DisplayTime = new DisplayTime(0);
   sub: Subscription;
   dcontrol = new FormControl();
@@ -41,6 +41,7 @@ export class DisplayControlComponent implements OnInit {
   constructor(
     private displaycontrolservice: DisplayControlService,
     private choroplethservice: ChoroplethService,
+    private simulationdataservice: SimulationDataService, 
     cdr: ChangeDetectorRef
   ) {
     displaycontrolservice.displaytime$.subscribe(
@@ -52,6 +53,11 @@ export class DisplayControlComponent implements OnInit {
       this.selecteddistricts = districts;
       this.numseldist = districts.length;
     });
+    simulationdataservice.simulationresult$.subscribe(
+      simresult => {
+        this.maxtime = _.last(simresult.snapshots).timestamp;
+        this.mintime = _.first(simresult.snapshots).timestamp;
+      })
   }
 
   changeTime(ts: number): void {

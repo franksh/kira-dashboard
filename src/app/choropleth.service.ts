@@ -21,8 +21,8 @@ import { DisplayTime } from "./display-control/display-time";
 import { DisplayControlService } from "./display-control.service";
 import { DISTRICTSDATA } from "./berlin-bezirke";
 import { HOSPITALDATA } from "./hospitals-berlin";
-// import {SIMMOCKUP} from './display-control/simulation-result-mockup';
 import { SIMMOCKUP } from "./display-control/simulation-result-mockup-2";
+import {SimulationDataService} from "./simulation-data.service";
 
 export interface DistData {
   district: string;
@@ -38,7 +38,7 @@ export interface Choropleth {
   providedIn: "root"
 })
 export class ChoroplethService {
-  simresult = SIMMOCKUP;
+  simresult: SimulationResult;
   districtsdata = DISTRICTSDATA;
   hospitaldata = HOSPITALDATA;
 
@@ -60,7 +60,7 @@ export class ChoroplethService {
 
   displaytimesub: Subscription;
 
-  constructor(private displaycontrolservice: DisplayControlService) {
+  constructor(private displaycontrolservice: DisplayControlService, private simulationdataservice: SimulationDataService) {
     this.displaytimesub = combineLatest(
       displaycontrolservice.displaytime$,
       this.allchoroplethdists$
@@ -82,8 +82,14 @@ export class ChoroplethService {
       this.selectedchoroplethhospSource.next(chororpleth);
     });
 
-    this.initChoropethDist();
-    this.initChoropethHosp();
+    simulationdataservice.simulationresult$.subscribe(
+      simresult => {
+        console.log(simresult);
+        this.simresult = simresult;
+        this.initChoropethDist();
+        this.initChoropethHosp();
+    })
+
   }
 
   computeChoroplethDist(districtsdata: any, snapshot: SimSnapshot): Choropleth {
