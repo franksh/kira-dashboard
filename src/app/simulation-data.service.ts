@@ -5,7 +5,7 @@ import {
   SimSnapshot,
   SimulationResult
 } from "./display-control/simulation-result";
-import { SIMMOCKUP } from "./display-control/simulation-result-mockup-2";
+import { SIMMOCKUP } from "./display-control/simulation-result-mockup";
 
 
 @Injectable({
@@ -18,10 +18,11 @@ export class SimulationDataService {
 	listts$: Observable;
 
   constructor() {
+  	this.listts = [];
   	for (var i in SIMMOCKUP.snapshots) {
   		this.listts.push(SIMMOCKUP.snapshots[i].timestamp)
   	}
-  	this.listts.sort()
+  	
   	this.listts$ = from([this.listts])
   }
 }

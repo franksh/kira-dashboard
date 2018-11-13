@@ -53,10 +53,10 @@ export class DisplayControlComponent implements OnInit {
       this.selecteddistricts = districts;
       this.numseldist = districts.length;
     });
-    simulationdataservice.simulationresult$.subscribe(
-      simresult => {
-        this.maxtime = _.last(simresult.snapshots).timestamp;
-        this.mintime = _.first(simresult.snapshots).timestamp;
+    simulationdataservice.listts$.subscribe(
+      listts => {
+        this.maxtime = _.last(listts);
+        this.mintime = _.first(listts);
       })
   }
 

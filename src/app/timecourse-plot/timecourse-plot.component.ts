@@ -19,7 +19,7 @@ import {
 import { DisplayControlService } from "../display-control.service";
 import { ChoroplethService } from "../choropleth.service";
 import { DISTRICTSDATA } from "../berlin-bezirke";
-import { SIMMOCKUP } from "../display-control/simulation-result-mockup-2";
+import { SimulationDataService } from "../simulation-data.service";
 
 export interface CasesTimecourse {
   timepoints: number[];
@@ -37,7 +37,6 @@ export class TimecoursePlotComponent {
 
   choroplethmode_isdistrict: boolean = true;
 
-  simresult = SIMMOCKUP;
   alldistrictsdata = [];
 
   public graph = {
@@ -78,7 +77,8 @@ export class TimecoursePlotComponent {
 
   constructor(
     private displaycontrolservice: DisplayControlService,
-    private choroplethservice: ChoroplethService
+    private choroplethservice: ChoroplethService,
+    private simulationdataservice: SimulationDataService
   ) {
     displaycontrolservice.choroplethmode$.subscribe(state => {
       state == "district"
@@ -88,16 +88,17 @@ export class TimecoursePlotComponent {
 
     combineLatest(
       choroplethservice.allchoroplethdists$,
-      displaycontrolservice.selecteddistricts$
-    ).subscribe(([choropleths, districts]) => {
+      displaycontrolservice.selecteddistricts$,
+      simulationdataservice.listts$
+    ).subscribe(([choropleths, districts, listts]) => {
       console.log(choropleths);
 
       this.graph.datadist = [];
-      var x = Array(this.simresult.snapshots.length).fill(0);
-      var y = Array(this.simresult.snapshots.length).fill(0);
+      var x = Array(listts.length).fill(0);
+      var y = Array(listts.length).fill(0);
       for (var i in districts) {
-        for (var j in this.simresult.snapshots) {
-          var ts = this.simresult.snapshots[j].timestamp;
+        for (var j in listts) {
+          var ts = listts[j]
           y[j] += choropleths[ts].find(
             data => data.district == districts[i]
           ).cases;
@@ -118,14 +119,15 @@ export class TimecoursePlotComponent {
 
     combineLatest(
       choroplethservice.allchoroplethhosp$,
-      displaycontrolservice.selectedhospitals$
-    ).subscribe(([choropleths, hospital]) => {
+      displaycontrolservice.selectedhospitals$,
+      simulationdataservice.listts$
+    ).subscribe(([choropleths, hospital, listts]) => {
       this.graph.datahosp = [];
-      var x = Array(this.simresult.snapshots.length).fill(0);
-      var y = Array(this.simresult.snapshots.length).fill(0);
+      var x = Array(listts.length).fill(0);
+      var y = Array(listts.length).fill(0);
       for (var i in hospital) {
-        for (var j in this.simresult.snapshots) {
-          var ts = this.simresult.snapshots[j].timestamp;
+        for (var j in listts) {
+          var ts = listts[j];
           y[j] += choropleths[ts].find(
             data => data.district == hospital[i]
           ).cases;
