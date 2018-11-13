@@ -14,7 +14,14 @@ import { SIMMOCKUP } from "./display-control/simulation-result-mockup-2";
 export class SimulationDataService {
 
 	simulationresult$ = from([SIMMOCKUP])
+	listts: number[];
+	listts$: Observable;
 
   constructor() {
+  	for (var i in SIMMOCKUP.snapshots) {
+  		this.listts.push(SIMMOCKUP.snapshots[i].timestamp)
+  	}
+  	this.listts.sort()
+  	this.listts$ = from([this.listts])
   }
 }
