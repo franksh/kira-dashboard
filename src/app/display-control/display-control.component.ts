@@ -25,7 +25,7 @@ import {SimulationDataService} from "../simulation-data.service";
   styleUrls: ["./display-control.component.css"]
 })
 export class DisplayControlComponent implements OnInit {
-  mintime: number = 0:
+  mintime: number = 0;
   maxtime: number = 1;
   displaytime: DisplayTime = new DisplayTime(0);
   sub: Subscription;
