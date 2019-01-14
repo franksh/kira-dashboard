@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { Observable, from, Subject } from "rxjs";
 
 import {
@@ -7,22 +7,20 @@ import {
 } from "./display-control/simulation-result";
 import { SIMMOCKUP } from "./display-control/simulation-result-mockup";
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class SimulationDataService {
-
-	simulationresult$ = from([SIMMOCKUP])
-	listts: number[];
-	listts$: Observable;
+  simulationresult$ = from([SIMMOCKUP]);
+  listts: number[];
+  listts$: Observable<number[]>;
 
   constructor() {
-  	this.listts = [];
-  	for (var i in SIMMOCKUP.snapshots) {
-  		this.listts.push(SIMMOCKUP.snapshots[i].timestamp)
-  	}
-  	
-  	this.listts$ = from([this.listts])
+    this.listts = [];
+    for (var i in SIMMOCKUP.snapshots) {
+      this.listts.push(SIMMOCKUP.snapshots[i].timestamp);
+    }
+
+    this.listts$ = from([this.listts]);
   }
 }
