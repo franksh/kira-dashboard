@@ -12,14 +12,11 @@ import pointsWithinPolygon from "@turf/points-within-polygon";
 import { points, polygon } from "@turf/helpers";
 import * as _ from "lodash";
 
-import {
-  SimSnapshot,
-  SimulationResult
-} from "../display-control/simulation-result";
-import { DisplayControlService } from "../display-control.service";
-import { ChoroplethService } from "../choropleth.service";
+import { SimSnapshot, SimulationResult } from "../services/simulation-result";
+import { DisplayControlService } from "../services/display-control.service";
+import { ChoroplethService } from "../services/choropleth.service";
 import { DISTRICTSDATA } from "../berlin-bezirke";
-import { SimulationDataService } from "../simulation-data.service";
+import { SimulationDataService } from "../services/simulation-data.service";
 
 export interface CasesTimecourse {
   timepoints: number[];
@@ -98,7 +95,7 @@ export class TimecoursePlotComponent {
       var y = Array(listts.length).fill(0);
       for (var i in districts) {
         for (var j in listts) {
-          var ts = listts[j]
+          var ts = listts[j];
           y[j] += choropleths[ts].find(
             data => data.district == districts[i]
           ).cases;

@@ -1,20 +1,16 @@
 import { Injectable } from "@angular/core";
-import { Observable, of, Subject, combineLatest} from "rxjs";
+import { Observable, of, Subject, combineLatest } from "rxjs";
 
 import * as _ from "lodash";
 
-import {
-  SimSnapshot,
-  SimulationResult
-} from "./display-control/simulation-result";
-import { DisplayTime } from "./display-control/display-time";
-import {SimulationDataService} from "./simulation-data.service"
+import { SimSnapshot, SimulationResult } from "./simulation-result";
+import { DisplayTime } from "../display-control/display-time";
+import { SimulationDataService } from "./simulation-data.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class DisplayControlService {
-
   // Observable sources
   private displaytimeSource = new Subject<DisplayTime>();
   private selectedsnapshotSource = new Subject<SimSnapshot>();
@@ -73,6 +69,7 @@ export class DisplayControlService {
 
   constructor(private simulationdataservice: SimulationDataService) {
     simulationdataservice.simulationresult$.subscribe(
-      simresult => this.simresult = simresult)
+      simresult => (this.simresult = simresult)
+    );
   }
 }

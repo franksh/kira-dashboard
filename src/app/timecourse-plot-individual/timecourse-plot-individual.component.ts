@@ -12,16 +12,17 @@ import pointsWithinPolygon from "@turf/points-within-polygon";
 import { points, polygon } from "@turf/helpers";
 import * as _ from "lodash";
 
+import { SimSnapshot, SimulationResult } from "../services/simulation-result";
+import { DisplayControlService } from "../services/display-control.service";
 import {
-  SimSnapshot,
-  SimulationResult
-} from "../display-control/simulation-result";
-import { DisplayControlService } from "../display-control.service";
-import { ChoroplethService, Choropleth, DistData } from "../choropleth.service";
+  ChoroplethService,
+  Choropleth,
+  DistData
+} from "../services/choropleth.service";
 import { DISTRICTSDATA } from "../berlin-bezirke";
 import { DISTRICT_COLORS } from "../districtcolors";
 import { HOSPITAL_COLORS } from "../hospitalcolors";
-import { SimulationDataService } from "../simulation-data.service";
+import { SimulationDataService } from "../services/simulation-data.service";
 
 export interface CasesTimecourse {
   timepoints: number[];

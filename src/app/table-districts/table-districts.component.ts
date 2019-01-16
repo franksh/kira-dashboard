@@ -1,22 +1,19 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
-import {SelectionModel} from '@angular/cdk/collections';
-import { Observable, Subject, Subscription, combineLatest} from 'rxjs';
-import {MatTableDataSource, MatPaginator, MatSort} from '@angular/material'
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { SelectionModel } from "@angular/cdk/collections";
+import { Observable, Subject, Subscription, combineLatest } from "rxjs";
+import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 
 import pointsWithinPolygon from "@turf/points-within-polygon";
 import { points, polygon } from "@turf/helpers";
 import * as _ from "lodash";
 
-import {
-  SimSnapshot,
-  SimulationResult
-} from "../display-control/simulation-result";
+import { SimSnapshot, SimulationResult } from "../services/simulation-result";
 import { DisplayTime } from "../display-control/display-time";
-import { DisplayControlService } from "../display-control.service";
-import { ChoroplethService, Choropleth } from "../choropleth.service";
+import { DisplayControlService } from "../services/display-control.service";
+import { ChoroplethService, Choropleth } from "../services/choropleth.service";
 
 import { DISTRICTSDATA } from "../berlin-bezirke";
-import { SIMMOCKUP } from "../display-control/simulation-result-mockup-2";
+import { SIMMOCKUP } from "../services/simulation-result-mockup-2";
 
 export interface DistData {
   district: string;
@@ -31,8 +28,11 @@ export interface DistData {
 export class TableDistrictsComponent implements OnInit {
   simresult = SIMMOCKUP;
 
-  displayedColumns: string[] = ['district', 'cases', "remove"];
-  dataSource = new MatTableDataSource<DistData>([{'district': 'Moabit', 'cases': 10},{'district': 'Eichkamp', 'cases': 5}]);
+  displayedColumns: string[] = ["district", "cases", "remove"];
+  dataSource = new MatTableDataSource<DistData>([
+    { district: "Moabit", cases: 10 },
+    { district: "Eichkamp", cases: 5 }
+  ]);
   @ViewChild(MatSort) sort: MatSort;
   selection = new SelectionModel<DistData>(true, []);
 
@@ -40,7 +40,7 @@ export class TableDistrictsComponent implements OnInit {
   lists = {
     districts: [],
     hospitals: []
-  }
+  };
   data = {
     districts: [],
     hospitals: []
@@ -104,11 +104,13 @@ export class TableDistrictsComponent implements OnInit {
   }
 
   removeDistrict(rm: string): void {
-    var selected_copy = this.choroplethmode_isdistrict ? _.cloneDeep(this.lists.districts) : _.cloneDeep(this.lists.hospitals);
+    var selected_copy = this.choroplethmode_isdistrict
+      ? _.cloneDeep(this.lists.districts)
+      : _.cloneDeep(this.lists.hospitals);
     _.remove(selected_copy, x => x == rm);
-    this.choroplethmode_isdistrict ? 
-      this.displaycontrolservice.changeSelectedDistricts(selected_copy) : 
-      this.displaycontrolservice.changeSelectedHospitals(selected_copy);
+    this.choroplethmode_isdistrict
+      ? this.displaycontrolservice.changeSelectedDistricts(selected_copy)
+      : this.displaycontrolservice.changeSelectedHospitals(selected_copy);
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -120,8 +122,8 @@ export class TableDistrictsComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.dataSource.data.forEach(row => this.selection.select(row));
   }
 }
