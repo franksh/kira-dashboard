@@ -13,16 +13,13 @@ import voronoi from "@turf/voronoi";
 import bbox from "@turf/bbox";
 import * as _ from "lodash";
 
-import {
-  SimSnapshot,
-  SimulationResult
-} from "./display-control/simulation-result";
-import { DisplayTime } from "./display-control/display-time";
+import { SimSnapshot, SimulationResult } from "./simulation-result";
+import { DisplayTime } from "../display-control/display-time";
 import { DisplayControlService } from "./display-control.service";
-import { DISTRICTSDATA } from "./berlin-bezirke";
-import { HOSPITALDATA } from "./hospitals-berlin";
-import { SIMMOCKUP } from "./display-control/simulation-result-mockup-2";
-import {SimulationDataService} from "./simulation-data.service";
+import { DISTRICTSDATA } from "../berlin-bezirke";
+import { HOSPITALDATA } from "../hospitals-berlin";
+import { SIMMOCKUP } from "./simulation-result-mockup-2";
+import { SimulationDataService } from "./simulation-data.service";
 
 export interface DistData {
   district: string;
@@ -60,7 +57,10 @@ export class ChoroplethService {
 
   displaytimesub: Subscription;
 
-  constructor(private displaycontrolservice: DisplayControlService, private simulationdataservice: SimulationDataService) {
+  constructor(
+    private displaycontrolservice: DisplayControlService,
+    private simulationdataservice: SimulationDataService
+  ) {
     this.displaytimesub = combineLatest(
       displaycontrolservice.displaytime$,
       this.allchoroplethdists$
@@ -82,14 +82,12 @@ export class ChoroplethService {
       this.selectedchoroplethhospSource.next(chororpleth);
     });
 
-    simulationdataservice.simulationresult$.subscribe(
-      simresult => {
-        console.log(simresult);
-        this.simresult = simresult;
-        this.initChoropethDist();
-        this.initChoropethHosp();
-    })
-
+    simulationdataservice.simulationresult$.subscribe(simresult => {
+      console.log(simresult);
+      this.simresult = simresult;
+      this.initChoropethDist();
+      this.initChoropethHosp();
+    });
   }
 
   computeChoroplethDist(districtsdata: any, snapshot: SimSnapshot): Choropleth {

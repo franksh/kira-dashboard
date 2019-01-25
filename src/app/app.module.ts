@@ -1,38 +1,40 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatGridListModule, 
-  MatCardModule, 
-  MatMenuModule, 
-  MatIconModule, 
-  MatButtonModule, 
-  MatFormFieldModule, 
-  MatSelectModule, 
-  MatSelectTrigger, 
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import {
+  MatGridListModule,
+  MatCardModule,
+  MatMenuModule,
+  MatIconModule,
+  MatButtonModule,
+  MatFormFieldModule,
+  MatSelectModule,
+  MatSelectTrigger,
   MatTableModule,
   MatPaginatorModule,
-  MatSortModule, 
-  MatCheckboxModule, 
+  MatSortModule,
+  MatCheckboxModule,
   MatDividerModule,
   MatListModule,
   MatButtonToggleModule,
   MatToolbarModule,
   MatExpansionModule,
   MatSliderModule
-} from '@angular/material';
-import { LayoutModule } from '@angular/cdk/layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+} from "@angular/material";
+import { LayoutModule } from "@angular/cdk/layout";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import {PlotlyModule} from 'angular-plotly.js'
+import { LeafletModule } from "@asymmetrik/ngx-leaflet";
+import { PlotlyModule } from "angular-plotly.js";
 
-import { AppComponent } from './app.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { MapDisplayComponent } from './map-display/map-display.component';
-import { DisplayControlComponent } from './display-control/display-control.component';
-import { TableDistrictsComponent } from './table-districts/table-districts.component';
-import { TimecoursePlotComponent } from './timecourse-plot/timecourse-plot.component';
-import { TimecoursePlotIndividualComponent } from './timecourse-plot-individual/timecourse-plot-individual.component';
+import { AppComponent } from "./app.component";
+import { DashboardComponent } from "./dashboard/dashboard.component";
+import { MapDisplayComponent } from "./map-display/map-display.component";
+import { DisplayControlComponent } from "./display-control/display-control.component";
+import { TableDistrictsComponent } from "./table-districts/table-districts.component";
+import { TimecoursePlotComponent } from "./timecourse-plot/timecourse-plot.component";
+import { TimecoursePlotIndividualComponent } from "./timecourse-plot-individual/timecourse-plot-individual.component";
+import { HttpModule } from "@angular/http";
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import { TimecoursePlotIndividualComponent } from './timecourse-plot-individual/
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     BrowserAnimationsModule,
     MatGridListModule,
     MatCardModule,
@@ -73,4 +76,4 @@ import { TimecoursePlotIndividualComponent } from './timecourse-plot-individual/
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

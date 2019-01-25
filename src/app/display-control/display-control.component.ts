@@ -1,23 +1,16 @@
-import {
-  Component,
-  OnInit,
-  AfterContentInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  EventEmitter
-} from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { MatCheckboxChange, MatButtonToggleChange } from "@angular/material";
 import { FormControl } from "@angular/forms";
-import { Observable, Subscription } from "rxjs";
+import { Subscription } from "rxjs";
 
 import * as _ from "lodash";
 
 import { DisplayTime } from "./display-time";
-import { DisplayControlService } from "../display-control.service";
-import { ChoroplethService } from "../choropleth.service";
+import { DisplayControlService } from "../services/display-control.service";
+import { ChoroplethService } from "../services/choropleth.service";
 import { DISTRICTSDATA } from "../berlin-bezirke";
 import { HOSPITALDATA } from "../hospitals-berlin";
-import {SimulationDataService} from "../simulation-data.service";
+import { SimulationDataService } from "../services/simulation-data.service";
 
 @Component({
   selector: "app-display-control",
@@ -41,7 +34,7 @@ export class DisplayControlComponent implements OnInit {
   constructor(
     private displaycontrolservice: DisplayControlService,
     private choroplethservice: ChoroplethService,
-    private simulationdataservice: SimulationDataService, 
+    private simulationdataservice: SimulationDataService,
     cdr: ChangeDetectorRef
   ) {
     displaycontrolservice.displaytime$.subscribe(
@@ -53,11 +46,10 @@ export class DisplayControlComponent implements OnInit {
       this.selecteddistricts = districts;
       this.numseldist = districts.length;
     });
-    simulationdataservice.listts$.subscribe(
-      listts => {
-        this.maxtime = _.last(listts);
-        this.mintime = _.first(listts);
-      })
+    simulationdataservice.listts$.subscribe(listts => {
+      this.maxtime = _.last(listts);
+      this.mintime = _.first(listts);
+    });
   }
 
   changeTime(ts: number): void {
