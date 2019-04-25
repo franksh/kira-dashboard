@@ -33,7 +33,6 @@ export class SimulationDataService {
     let data$ = this.http.get(
       environment.apiEndpoint
       // "http://localhost:4200/assets/data/Simulation_results_N100_T76.json"
-      // "http://localhost:4200/assets/data/Kira_trajectories_N1000_T168_real.json"
     );
     // Store simulation snapshots
     this.simulationresult$ = data$.pipe(
