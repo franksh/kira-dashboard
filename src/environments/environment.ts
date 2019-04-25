@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  logging: true,
+  apiEndpoint:
+    "http://localhost:4200/assets/data/Simulation_results_N100_T76.json"
 };
 
 /*

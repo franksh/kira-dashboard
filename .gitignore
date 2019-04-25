@@ -1,0 +1,6 @@
+.DS_Store
+
+src/assets/data/
+dist/angular-kira-dashboard-v01/
+node_modules/
+
