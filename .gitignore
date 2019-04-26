@@ -1,7 +1,10 @@
 .DS_Store
+__pycache__/
 
 src/assets/data/
 dist/angular-kira-dashboard-v01/
+
 node_modules/
 flask-backend/venv/
-flask-backend/data/
+
+flask-backend/data/input/*
