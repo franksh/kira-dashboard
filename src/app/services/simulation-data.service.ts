@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Output, EventEmitter } from "@angular/core";
 import { Observable, from } from "rxjs";
 import { Http } from "@angular/http";
 import { map, switchMap } from "rxjs/operators";
@@ -15,6 +15,8 @@ export class SimulationDataService {
   // listts: number[];
   listts$: Observable<number[]>;
 
+  @Output() dataChanged: EventEmitter<boolean> = new EventEmitter();
+
   // Load mock data
   loadMockData() {
     this.simulationresult$ = from([SIMMOCKUP]);
@@ -29,11 +31,10 @@ export class SimulationDataService {
 
   // Load actual simulation data
   // stored in assets/data
-  loadSimulationData() {
-    let data$ = this.http.get(
-      environment.apiEndpoint
-      // "http://localhost:4200/assets/data/Simulation_results_N100_T76.json"
-    );
+  loadSimulationData(outbreakLocation = "APLACE") {
+    let dataPath = environment.apiEndpoint + "?name=" + outbreakLocation;
+    console.log("Fetching data: ", dataPath);
+    let data$ = this.http.get(dataPath);
     // Store simulation snapshots
     this.simulationresult$ = data$.pipe(
       map(response => {
@@ -53,6 +54,11 @@ export class SimulationDataService {
         return from([listts]);
       })
     );
+  }
+
+  changeOutbreakLocation(outbreakLocation: string) {
+    this.loadSimulationData(outbreakLocation);
+    this.dataChanged.emit(true);
   }
 
   constructor(private http: Http) {

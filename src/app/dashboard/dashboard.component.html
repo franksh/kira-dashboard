@@ -1,4 +1,7 @@
 <div class="map-divs" id="map-div">
+  <mat-card class="header-info">
+    <app-header-info></app-header-info>
+  </mat-card>
   <mat-card class="map-card">
     <mat-card-content>
       <app-map-display></app-map-display>
@@ -10,12 +13,12 @@
 </div>
 
 <div class="side-accordion" id="side-accordion">
-  <mat-accordion  [multi]="true">
+  <mat-accordion [multi]="true">
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         Table
       </mat-expansion-panel-header>
-        <app-table-districts></app-table-districts>
+      <app-table-districts></app-table-districts>
     </mat-expansion-panel>
 
     <mat-expansion-panel>
@@ -25,8 +28,7 @@
       <app-timecourse-plot></app-timecourse-plot>
     </mat-expansion-panel>
 
-
-      <mat-expansion-panel>
+    <mat-expansion-panel>
       <mat-expansion-panel-header>
         Time Course - Individual
       </mat-expansion-panel-header>

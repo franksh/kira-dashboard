@@ -69,6 +69,12 @@ export class DisplayControlComponent implements OnInit {
     this.subdistricts = this.dcontrol.valueChanges.subscribe(districts =>
       this.changeSelectedDistricts(districts)
     );
+
+    // Listen to changes in data
+    this.displaycontrolservice.resetDisplays.subscribe(() => {
+      this.displaytime = new DisplayTime(0);
+      this.changeTime(0);
+    });
   }
 
   getAllDistricts(): string[] {
@@ -88,11 +94,11 @@ export class DisplayControlComponent implements OnInit {
   }
 
   initiateSubsciptions() {
-    console.log("init");
+    console.log("Initializing subscriptions");
     this.changeTime(this.mintime);
     this.changeSelectedDistricts(this.districtlist);
     this.changeSelectedHospitals(this.getAllHospitals());
-    this.changeSelectedHospitals;
+    // this.changeSelectedHospitals;
     this.choroplethservice.initChoropethDist();
     this.choroplethservice.initChoropethHosp();
   }
