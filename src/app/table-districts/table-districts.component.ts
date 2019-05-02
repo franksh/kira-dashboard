@@ -1,18 +1,13 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { SelectionModel } from "@angular/cdk/collections";
-import { Observable, Subject, Subscription, combineLatest } from "rxjs";
+import { combineLatest } from "rxjs";
 import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 
-import pointsWithinPolygon from "@turf/points-within-polygon";
-import { points, polygon } from "@turf/helpers";
 import * as _ from "lodash";
 
-import { SimSnapshot, SimulationResult } from "../services/simulation-result";
-import { DisplayTime } from "../display-control/display-time";
 import { DisplayControlService } from "../services/display-control.service";
 import { ChoroplethService, Choropleth } from "../services/choropleth.service";
 
-import { DISTRICTSDATA } from "../berlin-bezirke";
 import { SIMMOCKUP } from "../services/simulation-result-mockup-2";
 
 export interface DistData {

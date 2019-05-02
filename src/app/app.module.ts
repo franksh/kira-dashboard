@@ -35,6 +35,7 @@ import { TableDistrictsComponent } from "./table-districts/table-districts.compo
 import { TimecoursePlotComponent } from "./timecourse-plot/timecourse-plot.component";
 import { TimecoursePlotIndividualComponent } from "./timecourse-plot-individual/timecourse-plot-individual.component";
 import { HttpModule } from "@angular/http";
+import { HeaderInfoComponent } from './header-info/header-info.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { HttpModule } from "@angular/http";
     DisplayControlComponent,
     TableDistrictsComponent,
     TimecoursePlotComponent,
-    TimecoursePlotIndividualComponent
+    TimecoursePlotIndividualComponent,
+    HeaderInfoComponent
   ],
   imports: [
     BrowserModule,

@@ -11,8 +11,6 @@ import json
 from flask import Flask, request
 from flask_restful import Resource, Api
 from flask_cors import CORS
-import pandas as pd
-import numpy as np
 
 app = Flask(__name__)
 app.config.from_pyfile('config.ini')
@@ -22,76 +20,112 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 api = Api(app)
 
 
-def initialize_api():
-    """
-    Initialize the API when starting. Load data from disk, etc.
-    """
-    pass
-
-
-## DATA INPUT / OUTPUT ###############################
-
-def load_data():
-    """
-    Load the data from disk
-    """
-    # Get relative path to data dir
-    api_path = os.path.realpath(__file__)
-    data_path = os.path.dirname(os.path.dirname(api_path)) + '/data/output/'
-
-    # data_file = "FEPR_trajectories_N100_T168_real.csv"
-    data_file = app.config['DATA_FILE']
-
-    with open(data_path + data_file, 'r') as read_file:
-        snapshots_json = json.load(read_file)
-
-    snapshots = snapshots_json['snapshots']
-    return snapshots
-
-
 class SimulationData(Resource):
     """
     Endpoint to retrieve the simulation data
     """
 
+    def __init__(self):
+
+        # Get relative path to data dir
+        api_path = os.path.realpath(__file__)
+        data_path = os.path.dirname(
+            os.path.dirname(api_path)) + '/data/output/'
+        self.DATA_PATH = data_path
+
+        self.VERBOSE = app.config['VERBOSE']
+
+    ## API INPUT/OUTPUT ##########################
+
     def get(self):
         """
-        Returns the simulation data
+        Returns the simulation data.
+        Depending on the input, this either:
+        - runs a simulation (to be implemented)
+        - loads data of a previously run simulation for some specific sites
+        - loads default data if everything else fails
 
-        Input parameters can be used to filter the data. Input parameters are:
-        -- lat: Outbreak site latitude
-        -- lon: Outbreak site longitude
-        -- time: The hour in which the outbreak happened, counted from Monday
+        Arguments can be used to filter the data. Input parameters are:
+        -- name: Short name of the previously run simulation / scenario
         """
+        # Load request parameters
+        name = request.args.get('name', None)
 
-        # At the moment, just load the data from file
-        snapshots = load_data()
+        # Load data
+        snapshots = None
+        # Try loading if name given
+        if name is not None:
+            snapshots = self.load_snapshot(name)
 
-        # default_loc = app.config['LOCATION_POTSDAMER_PLATZ']
-        # lat = request.args.get('lat', default=None, type=float)
-        # lon = request.args.get('lon', default=None, type=float)
-        # time = request.args.get('time', default=132, type=int)
-
-        # df = api.df
-
-        # # Filter data if site is given
-        # if lat and lon:
-        #     df = filter_data_for_outbreak_location_and_time(df, lat, lon, time)
-
-        # # Convert to Angular format
-        # snapshots = convert_data_for_dashboard(df)
-
-        # print(
-        #     "Outbreak site used:\
-        #     \nlat: {}\tlon: {}\ttime: {}".format(lat, lon, time)
-        # )
+        # If no snapshots could be loaded with the given arguments,
+        # load default data as backup
+        if not snapshots:
+            snapshots = self.load_default_data()
 
         return snapshots
+
+    ## DATA INPUT / OUTPUT ###############################
+
+    def load_default_data(self):
+        """
+        Load default data from disk if arguments fail
+        """
+
+        self.log("Loading default data")
+        data_file = self.DATA_PATH + app.config['DATA_FILE_DEFAULT']
+        self.log(" - Loading file {}".format(data_file))
+        with open(data_file, 'r') as read_file:
+            snapshots_json = json.load(read_file)
+
+        snapshots = snapshots_json['snapshots']
+        return snapshots
+
+    def load_snapshot(self, name):
+        """
+        Load a snapshot from disk, that is identifiable by a specific name
+
+        Current valid names are:
+        -- PPLACE: Potsdamer Platz
+        -- APLACE: Alexanderplatz
+        -- OLYMP: Olympiastadion
+        """
+        self.log("Loading snapshot for name={}".format(name))
+        snapshots = None
+        if name == 'PPLACE':
+            data_file = self.DATA_PATH + app.config['DATA_FILE_PPLACE']
+            self.log(" - Loading file {}".format(data_file))
+            with open(data_file, 'r') as read_file:
+                snapshots_json = json.load(read_file)
+            snapshots = snapshots_json['snapshots']
+        elif name == 'APLACE':
+            data_file = self.DATA_PATH + app.config['DATA_FILE_APLACE']
+            self.log(" - Loading file {}".format(data_file))
+            with open(data_file, 'r') as read_file:
+                snapshots_json = json.load(read_file)
+            snapshots = snapshots_json['snapshots']
+        elif name == 'OLYMP':
+            data_file = self.DATA_PATH + app.config['DATA_FILE_OLYMP']
+            self.log(" - Loading file {}".format(data_file))
+            with open(data_file, 'r') as read_file:
+                snapshots_json = json.load(read_file)
+            snapshots = snapshots_json['snapshots']
+
+        else:
+            self.log(" - no file found for given name")
+        return snapshots
+
+    ## UTILITY #########################
+    def log(self, msg):
+        """
+        Logging for debugging.
+        At the moment print to console if verbose
+        """
+        if self.VERBOSE:
+            print(msg)
 
 
 # api.add_resource(SimulationData, '/<string:location_coords>')
 api.add_resource(SimulationData, '/')
 
 if __name__ == '__main__':
-    initialize_api()
     app.run(debug=True)
