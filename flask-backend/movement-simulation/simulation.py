@@ -196,14 +196,16 @@ class MovementSimulation():
 
         t_max = self.T_SIMULATE + outbreak_time
 
-        start_locs = self._get_start_locations_at_outbreak_location(
-            outbreak_location)
+        # start_locs = self._get_start_locations_at_outbreak_location(
+            # outbreak_location)
+        start_loc = self._get_outbreak_location_as_start(outbreak_location)
 
         # Simulate individuals
         for ind in self.tqdm_counter(range(self.N_IND)):
             self.t = outbreak_time
 
-            loc_first = np.random.choice(start_locs)
+            # loc_first = np.random.choice(start_locs)
+            loc_first = start_loc
             cell_first = self._get_cell_of_loc(loc_first)
             self._add_location_to_individual(
                 self.t, ind, loc_first, cell_first)
@@ -324,6 +326,23 @@ class MovementSimulation():
         # Get loc_id, cell_id
         loc_id, cell_id = locs.loc[idx][['loc_id', 'cell_id']]
         return (loc_id, cell_id)
+
+    def _get_outbreak_location_as_start(self, outbreak_location):
+        """
+        Returns the outbreak location as the start location. Adds it to
+        the location map
+
+        Returns:
+        - location: The start location
+        """
+        # Steps:
+        # Get bounding box around outbreak location
+        bbox = self._get_location_bounding_box(*outbreak_location)
+        # Get the center
+        center = np.mean(np.array(bbox).reshape(2,2), axis=0)
+        # Create new location
+        location = self._create_new_location_at_lat_lon(*center[::-1])
+        return location
 
     def _get_start_locations_at_outbreak_location(self, outbreak_location):
         """
@@ -485,6 +504,33 @@ class MovementSimulation():
 
         return loc_id
 
+    def _create_new_location_at_lat_lon(self, lat, lon):
+        """
+        Creates a new location at the given lat/lon coordinates
+        """
+        loc_id = self.LOC_DENSITY_DATA['loc_id'].max()+1
+        cell_id = self._get_cell_id_of_lat_lon(lat, lon)
+        loc_data = {
+            'loc_id': loc_id,
+            'lat': lat,
+            'lon': lon,
+            'count': 1,
+            'cell_id': cell_id,
+            'weight': 1,
+        }
+        # Add to density table
+        self.LOC_DENSITY_DATA = self.LOC_DENSITY_DATA.append(
+            loc_data, ignore_index=True)
+        # Add to LOC_CELL_MAP
+        new_map = pd.Series([loc_data['count']], index=[(loc_id, cell_id)])
+        self.LOC_CELL_MAP = self.LOC_CELL_MAP.append(new_map)
+        # Add to CELL_LOC_MAP
+        new_map = pd.Series([loc_data['count']], index=[(cell_id, loc_id)])
+        self.CELL_LOC_MAP = self.CELL_LOC_MAP.append(new_map).sort_index()
+
+        return loc_id
+
+
     def _get_cell_id_of_lat_lon(self, lat, lon):
         """
         Returns the id of the cell in which the given coordinates lie
@@ -576,8 +622,8 @@ class MovementSimulation():
             ]
         """
         # df = df.head(1000)
-
         # Round time to nearest hour
+        df = df.sort_values(by='t', ascending=True)
         df['t'] = df['t'].astype(int)
         # Group by time
         df = df.groupby(by=['t', 'ind']).first()

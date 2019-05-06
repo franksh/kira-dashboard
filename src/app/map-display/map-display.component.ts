@@ -278,13 +278,13 @@ export class MapDisplayComponent implements AfterViewInit {
     this.secondaryColor = getComputedStyle(this.secondary.nativeElement).color;
   }
 
-  changeHeatmap(heatcoodinates: number[][]): void {
+  changeHeatmap(heatcoordinates: number[][]): void {
     this.heatmapdata.data = [];
-    for (var index in heatcoodinates) {
+    for (var index in heatcoordinates) {
       this.heatmapdata.data.push({
-        lat: heatcoodinates[index][1],
-        lng: heatcoodinates[index][0],
-        count: 0.4
+        lat: heatcoordinates[index][1],
+        lng: heatcoordinates[index][0],
+        count: 0.1
       });
     }
     this.heatmaplayer.setData(this.heatmapdata);

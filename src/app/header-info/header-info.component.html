@@ -2,7 +2,8 @@
   KIRA Dashboard
 </mat-card-title>
 <mat-card-content>
-  The dashboard shows how individuals would move from an outbreak location.
+  The dashboard shows the simulated movement of individuals from an outbreak
+  location.
 </mat-card-content>
 <mat-form-field>
   <mat-label>
@@ -10,7 +11,6 @@
   </mat-label>
   <mat-select
     matNativeControle
-    required
     (selectionChange)="outbreakLocationChange($event)"
   >
     <mat-option value="PPLACE">Potsdamer Platz</mat-option>
