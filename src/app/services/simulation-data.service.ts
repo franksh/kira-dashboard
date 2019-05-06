@@ -31,7 +31,7 @@ export class SimulationDataService {
 
   // Load actual simulation data
   // stored in assets/data
-  loadSimulationData(outbreakLocation = "APLACE") {
+  loadSimulationData(outbreakLocation = "PPLACE") {
     let dataPath = environment.apiEndpoint + "?name=" + outbreakLocation;
     console.log("Fetching data: ", dataPath);
     let data$ = this.http.get(dataPath);
