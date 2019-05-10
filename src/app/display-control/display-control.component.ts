@@ -47,8 +47,11 @@ export class DisplayControlComponent implements OnInit {
       this.numseldist = districts.length;
     });
     simulationdataservice.listts$.subscribe(listts => {
+      console.log("getting listts");
+      console.log(listts);
       this.maxtime = _.last(listts);
       this.mintime = _.first(listts);
+      this.changeTime(this.mintime);
     });
   }
 
@@ -69,12 +72,6 @@ export class DisplayControlComponent implements OnInit {
     this.subdistricts = this.dcontrol.valueChanges.subscribe(districts =>
       this.changeSelectedDistricts(districts)
     );
-
-    // Listen to changes in data
-    this.displaycontrolservice.resetDisplays.subscribe(() => {
-      this.displaytime = new DisplayTime(0);
-      this.changeTime(0);
-    });
   }
 
   getAllDistricts(): string[] {

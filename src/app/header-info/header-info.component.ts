@@ -18,7 +18,6 @@ export class HeaderInfoComponent implements OnInit {
 
   outbreakLocationChange($event: MatSelectChange) {
     // this.displaycontrolservice.changeChoroplethmode($event.value);
-    this.simulationdataservice.changeOutbreakLocation($event.value);
-    this.displaycontrolservice.reloadSimulationData();
+    this.simulationdataservice.loadSimulationData($event.value);
   }
 }

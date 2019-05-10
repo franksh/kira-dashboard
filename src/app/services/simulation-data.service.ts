@@ -17,10 +17,6 @@ export class SimulationDataService {
   simulationresult$ = this.simulationresultSource.asObservable();
   listtsSource = new Subject<number[]>();
   listts$ = this.listtsSource.asObservable();
-  //dataSource = new Subject<SimulationResult>(); 
-  //data$: Observable<Response>;
-
-  @Output() dataChanged: EventEmitter<boolean> = new EventEmitter();
 
   // Load actual simulation data
   // stored in assets/data
@@ -41,34 +37,11 @@ export class SimulationDataService {
 
   changeOutbreakLocation(outbreakLocation: string) {
     this.loadSimulationData(outbreakLocation);
-    this.dataChanged.emit(true);
   }
 
   constructor(private http: Http) {
 
     this.loadSimulationData();
-
-    /*
-    // Store simulation snapshots
-    this.data$.subscribe(response => {
-        console.log("updating simulationresult");
-        let simResult = new SimulationResult(response.json());
-        this.simulationresultSource.next(simResult);
-      });
-    // Store time series
-    this.data$.subscribe(response => {
-        console.log("updating listts");
-        let simResult = new SimulationResult(response.json());
-        let listts: number[] = [];
-        for (var i in simResult.snapshots) {
-          listts.push(simResult.snapshots[i].timestamp);
-        }
-        this.listtsSource.next(listts);
-      });
-    */
-    this.loadSimulationData();
-
-    
 
   }
 }

@@ -83,7 +83,8 @@ export class ChoroplethService {
     });
 
     simulationdataservice.simulationresult$.subscribe(simresult => {
-      // console.log(simresult);
+      console.log("getting simresult");
+      console.log(simresult);
       this.simresult = simresult;
       this.initChoropethDist();
       this.initChoropethHosp();

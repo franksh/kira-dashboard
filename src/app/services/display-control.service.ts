@@ -32,9 +32,6 @@ export class DisplayControlService {
   choroplethmode$ = this.choroplethmodeSource.asObservable();
   selectactive$ = this.selectactiveSource.asObservable();
 
-  // Event triggers (to update components)
-  @Output() resetDisplays: EventEmitter<void> = new EventEmitter();
-
   // Storage for simulation data
   simresult: SimulationResult;
 
@@ -73,16 +70,6 @@ export class DisplayControlService {
 
   constructor(private simulationdataservice: SimulationDataService) {
     simulationdataservice.simulationresult$.subscribe(
-      simresult => (this.simresult = simresult)
-    );
-    // If simulation data changes, tell displays to reset
-    this.simulationdataservice.dataChanged.subscribe(hasChanged => {
-      this.resetDisplays.emit();
-    });
-  }
-
-  reloadSimulationData() {
-    this.simulationdataservice.simulationresult$.subscribe(
       simresult => (this.simresult = simresult)
     );
   }
