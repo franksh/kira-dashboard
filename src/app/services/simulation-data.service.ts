@@ -1,6 +1,6 @@
 import { Injectable, Output, EventEmitter } from "@angular/core";
-import { Observable, from } from "rxjs";
-import { Http } from "@angular/http";
+import { Observable, Subject, from } from "rxjs";
+import { Http, Response } from "@angular/http";
 import { map, switchMap } from "rxjs/operators";
 
 import { SimulationResult } from "./simulation-result";
@@ -11,49 +11,32 @@ import { environment } from "../../environments/environment";
   providedIn: "root"
 })
 export class SimulationDataService {
-  simulationresult$: Observable<SimulationResult> = from([SIMMOCKUP]);
-  // listts: number[];
-  listts$: Observable<number[]>;
+
+
+  simulationresultSource = new Subject<SimulationResult>(); 
+  simulationresult$ = this.simulationresultSource.asObservable();
+  listtsSource = new Subject<number[]>();
+  listts$ = this.listtsSource.asObservable();
+  //dataSource = new Subject<SimulationResult>(); 
+  //data$: Observable<Response>;
 
   @Output() dataChanged: EventEmitter<boolean> = new EventEmitter();
-
-  // Load mock data
-  loadMockData() {
-    this.simulationresult$ = from([SIMMOCKUP]);
-
-    let listts: number[] = [];
-    for (var i in SIMMOCKUP.snapshots) {
-      listts.push(SIMMOCKUP.snapshots[i].timestamp);
-    }
-    // this.listts = listts;
-    this.listts$ = from([listts]);
-  }
 
   // Load actual simulation data
   // stored in assets/data
   loadSimulationData(outbreakLocation = "PPLACE") {
     let dataPath = environment.apiEndpoint + "?name=" + outbreakLocation;
     console.log("Fetching data: ", dataPath);
-    let data$ = this.http.get(dataPath);
-    // Store simulation snapshots
-    this.simulationresult$ = data$.pipe(
-      map(response => {
+    this.http.get(dataPath).subscribe(response => {
+        console.log("updating simulationresult");
         let simResult = new SimulationResult(response.json());
-        return simResult;
-      })
-    );
-    // Store time series
-    this.listts$ = data$.pipe(
-      switchMap(response => {
-        let simResult = new SimulationResult(response.json());
+        this.simulationresultSource.next(simResult);
         let listts: number[] = [];
         for (var i in simResult.snapshots) {
           listts.push(simResult.snapshots[i].timestamp);
         }
-        // this.listts = listts;
-        return from([listts]);
-      })
-    );
+        this.listtsSource.next(listts);
+      });;
   }
 
   changeOutbreakLocation(outbreakLocation: string) {
@@ -62,7 +45,30 @@ export class SimulationDataService {
   }
 
   constructor(private http: Http) {
-    // this.loadMockData();
+
     this.loadSimulationData();
+
+    /*
+    // Store simulation snapshots
+    this.data$.subscribe(response => {
+        console.log("updating simulationresult");
+        let simResult = new SimulationResult(response.json());
+        this.simulationresultSource.next(simResult);
+      });
+    // Store time series
+    this.data$.subscribe(response => {
+        console.log("updating listts");
+        let simResult = new SimulationResult(response.json());
+        let listts: number[] = [];
+        for (var i in simResult.snapshots) {
+          listts.push(simResult.snapshots[i].timestamp);
+        }
+        this.listtsSource.next(listts);
+      });
+    */
+    this.loadSimulationData();
+
+    
+
   }
 }
