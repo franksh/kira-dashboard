@@ -51,7 +51,7 @@ export class DisplayControlComponent implements OnInit {
       console.log(listts);
       this.maxtime = _.last(listts);
       this.mintime = _.first(listts);
-      this.changeTime(this.mintime);
+      this.initiateSubsciptions()
     });
   }
 
