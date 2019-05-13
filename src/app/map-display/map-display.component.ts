@@ -113,7 +113,7 @@ export class MapDisplayComponent implements AfterViewInit {
       this.updateLayers();
     });
 
-    this.selectedsnapshotsub = displaycontrolservice.selectedsnapshot$.subscribe(
+    this.selectedsnapshotsub = choroplethservice.selectedsnapshot$.subscribe(
       selectedsnapshot => {
         this.changeHeatmap(selectedsnapshot.points);
         this.updateLayers();

@@ -55,12 +55,18 @@ export class ChoroplethService {
   selectedchoroplethhospSource = new Subject<Choropleth>();
   selectedchoroplethhosp$ = this.selectedchoroplethhospSource.asObservable();
 
+  selectedsnapshotSource = new Subject<SimSnapshot>();
+  selectedsnapshot$ = this.selectedsnapshotSource.asObservable();
+
   displaytimesub: Subscription;
 
   constructor(
     private displaycontrolservice: DisplayControlService,
     private simulationdataservice: SimulationDataService
   ) {
+    
+    displaycontrolservice.displaytime$.subscribe((time) => this.changesslectedsnapshot(time.timestamp))
+
     this.displaytimesub = combineLatest(
       displaycontrolservice.displaytime$,
       this.allchoroplethdists$
@@ -181,5 +187,11 @@ export class ChoroplethService {
 
   getvoronoihospitals(): any {
     return this.voronoihospitals;
+  }
+
+  changesslectedsnapshot(ts: number): void {
+    this.selectedsnapshotSource.next(
+      this.simresult.snapshots.find(snaps => snaps.timestamp === ts)
+    );
   }
 }
