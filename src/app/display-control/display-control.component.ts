@@ -7,7 +7,7 @@ import * as _ from "lodash";
 
 import { DisplayTime } from "./display-time";
 import { DisplayControlService } from "../services/display-control.service";
-import { ChoroplethService } from "../services/choropleth.service";
+import { DataProcessing } from "../services/data-processing.service";
 import { DISTRICTSDATA } from "../berlin-bezirke";
 import { HOSPITALDATA } from "../hospitals-berlin";
 import { SimulationDataService } from "../services/simulation-data.service";
@@ -33,7 +33,7 @@ export class DisplayControlComponent implements OnInit {
 
   constructor(
     private displaycontrolservice: DisplayControlService,
-    private choroplethservice: ChoroplethService,
+    private dataprocessing: DataProcessing,
     private simulationdataservice: SimulationDataService,
     cdr: ChangeDetectorRef
   ) {
@@ -96,8 +96,8 @@ export class DisplayControlComponent implements OnInit {
     this.changeSelectedDistricts(this.districtlist);
     this.changeSelectedHospitals(this.getAllHospitals());
     // this.changeSelectedHospitals;
-    this.choroplethservice.initChoropethDist();
-    this.choroplethservice.initChoropethHosp();
+    this.dataprocessing.initChoropethDist();
+    this.dataprocessing.initChoropethHosp();
   }
 
   heatmapactiveChange($event) {

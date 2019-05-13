@@ -6,7 +6,7 @@ import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 import * as _ from "lodash";
 
 import { DisplayControlService } from "../services/display-control.service";
-import { ChoroplethService, Choropleth } from "../services/choropleth.service";
+import { DataProcessing, Choropleth } from "../services/data-processing.service";
 
 import { SIMMOCKUP } from "../services/simulation-result-mockup-2";
 
@@ -47,7 +47,7 @@ export class TableDistrictsComponent implements OnInit {
 
   constructor(
     private displaycontrolservice: DisplayControlService,
-    private choroplethservice: ChoroplethService
+    private dataprocessing: DataProcessing
   ) {
     displaycontrolservice.choroplethmode$.subscribe(state => {
       if (state == "district") {
@@ -60,7 +60,7 @@ export class TableDistrictsComponent implements OnInit {
     });
 
     combineLatest(
-      choroplethservice.selectedchoroplethdist$,
+      dataprocessing.selectedchoroplethdist$,
       displaycontrolservice.selecteddistricts$
     ).subscribe(([choropleth, districts]) => {
       this.lists.districts = districts;
@@ -76,7 +76,7 @@ export class TableDistrictsComponent implements OnInit {
     });
 
     combineLatest(
-      choroplethservice.selectedchoroplethhosp$,
+      dataprocessing.selectedchoroplethhosp$,
       displaycontrolservice.selectedhospitals$
     ).subscribe(([choropleth, hospitals]) => {
       this.lists.hospitals = hospitals;

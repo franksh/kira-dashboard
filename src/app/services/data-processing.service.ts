@@ -34,7 +34,7 @@ export interface Choropleth {
 @Injectable({
   providedIn: "root"
 })
-export class ChoroplethService {
+export class DataProcessing {
   simresult: SimulationResult;
   districtsdata = DISTRICTSDATA;
   hospitaldata = HOSPITALDATA;

@@ -15,10 +15,10 @@ import * as _ from "lodash";
 import { SimSnapshot, SimulationResult } from "../services/simulation-result";
 import { DisplayControlService } from "../services/display-control.service";
 import {
-  ChoroplethService,
+  DataProcessing,
   Choropleth,
   DistData
-} from "../services/choropleth.service";
+} from "../services/data-processing.service";
 import { DISTRICTSDATA } from "../berlin-bezirke";
 import { DISTRICT_COLORS } from "../districtcolors";
 import { HOSPITAL_COLORS } from "../hospitalcolors";
@@ -80,7 +80,7 @@ export class TimecoursePlotIndividualComponent {
 
   constructor(
     private displaycontrolservice: DisplayControlService,
-    private choroplethservice: ChoroplethService,
+    private dataprocessing: DataProcessing,
     private simulationdataservice: SimulationDataService
   ) {
     displaycontrolservice.choroplethmode$.subscribe(state => {
@@ -90,7 +90,7 @@ export class TimecoursePlotIndividualComponent {
     });
 
     combineLatest(
-      choroplethservice.allchoroplethdists$,
+      dataprocessing.allchoroplethdists$,
       displaycontrolservice.selecteddistricts$,
       simulationdataservice.listts$
     ).subscribe(([choropleths, districts, listts]) => {
@@ -118,7 +118,7 @@ export class TimecoursePlotIndividualComponent {
     });
 
     combineLatest(
-      choroplethservice.allchoroplethhosp$,
+      dataprocessing.allchoroplethhosp$,
       displaycontrolservice.selectedhospitals$,
       simulationdataservice.listts$
     ).subscribe(([choropleths, hospital, listts]) => {

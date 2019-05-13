@@ -5,7 +5,6 @@ import * as _ from "lodash";
 
 import { SimSnapshot, SimulationResult } from "./simulation-result";
 import { DisplayTime } from "../display-control/display-time";
-import {ChoroplethService} from "./choropleth.service";
 
 @Injectable({
   providedIn: "root"
