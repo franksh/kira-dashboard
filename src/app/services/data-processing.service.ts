@@ -64,7 +64,7 @@ export class DataProcessing {
     private displaycontrolservice: DisplayControlService,
     private simulationdataservice: SimulationDataService
   ) {
-    
+
     displaycontrolservice.displaytime$.subscribe((time) => this.changesslectedsnapshot(time.timestamp))
 
     this.displaytimesub = combineLatest(
@@ -90,10 +90,11 @@ export class DataProcessing {
 
     simulationdataservice.simulationresult$.subscribe(simresult => {
       console.log("getting simresult");
-      console.log(simresult);
       this.simresult = simresult;
-      this.initChoropethDist();
       this.initChoropethHosp();
+      this.initChoropethDist();
+      
+
     });
   }
 
@@ -103,12 +104,9 @@ export class DataProcessing {
     var snappoints = points(snapshot.points);
     for (var i in districtsdata.features) {
       var district = districtsdata.features[i].properties.spatial_alias;
-      var distpolygon = polygon(districtsdata.features[i].geometry.coordinates);
+      var distpolygon = districtsdata.features[i];
       var cases = pointsWithinPolygon(snappoints, distpolygon).features.length;
-      choropleth.distdata.push({
-        district: district,
-        cases: pointsWithinPolygon(snappoints, distpolygon).features.length
-      });
+      choropleth.distdata.push({ district: district, cases: cases });
       if (cases > choropleth.maximum) {
         choropleth.maximum = cases;
       }
@@ -117,6 +115,7 @@ export class DataProcessing {
   }
 
   initChoropethDist() {
+    console.log("Choropleth District starts")
     var allchoroplethdists: DistData[][] = [];
     this.maxvaluechoroplethdists = 0;
     for (var i in this.simresult.snapshots) {
@@ -129,6 +128,7 @@ export class DataProcessing {
       }
     }
     this.allchoroplethdistsSource.next(allchoroplethdists);
+    console.log("Choropleth Districts ready")
   }
 
   computeChoroplethHosp(
@@ -152,6 +152,7 @@ export class DataProcessing {
   }
 
   initChoropethHosp() {
+    console.log("Choropleth Hospital starts")
     var hospitalcoodinates = [];
     var hospitalnames = [];
     for (var i in this.hospitaldata) {
@@ -166,7 +167,6 @@ export class DataProcessing {
       var hospitalname = hospitalnames[i];
       this.voronoihospitals.features[i].properties.name = hospitalname;
     }
-
     var allchoroplethhosp: DistData[][] = [];
     this.maxvaluechoroplethhosp = 0;
     for (var i in this.simresult.snapshots) {
@@ -183,6 +183,7 @@ export class DataProcessing {
       }
     }
     this.allchoroplethhospSource.next(allchoroplethhosp);
+    console.log("Choropleth Hospital ready")
   }
 
   getvoronoihospitals(): any {
