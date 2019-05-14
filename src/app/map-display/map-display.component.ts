@@ -10,8 +10,6 @@ import { Observable, Subscription } from "rxjs";
 
 declare var L;
 declare var HeatmapOverlay;
-import pointsWithinPolygon from "@turf/points-within-polygon";
-import { points, polygon } from "@turf/helpers";
 import * as _ from "lodash";
 
 import { SimSnapshot, SimulationResult } from "../services/simulation-result";
@@ -22,7 +20,7 @@ import {
   DistData,
   Choropleth
 } from "../services/data-processing.service";
-import { DISTRICTSDATA } from "../berlin-bezirke-simpl";
+import { DISTRICTSDATA } from "../berlin-bezirke";
 import { DISTRICT_COLORS } from "../districtcolors";
 import { HOSPITAL_COLORS } from "../hospitalcolors";
 
