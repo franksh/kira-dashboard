@@ -15,7 +15,7 @@ import * as _ from "lodash";
 import { SimSnapshot, SimulationResult } from "../services/simulation-result";
 import { DisplayControlService } from "../services/display-control.service";
 import { DataProcessing } from "../services/data-processing.service";
-import { DISTRICTSDATA } from "../berlin-bezirke";
+import { DISTRICTSDATA } from "../berlin-bezirke-simpl";
 import { SimulationDataService } from "../services/simulation-data.service";
 
 export interface CasesTimecourse {

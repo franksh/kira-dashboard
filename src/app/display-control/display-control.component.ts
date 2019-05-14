@@ -8,7 +8,7 @@ import * as _ from "lodash";
 import { DisplayTime } from "./display-time";
 import { DisplayControlService } from "../services/display-control.service";
 import { DataProcessing } from "../services/data-processing.service";
-import { DISTRICTSDATA } from "../berlin-bezirke";
+import { DISTRICTSDATA } from "../berlin-bezirke-simpl";
 import { HOSPITALDATA } from "../hospitals-berlin";
 import { SimulationDataService } from "../services/simulation-data.service";
 

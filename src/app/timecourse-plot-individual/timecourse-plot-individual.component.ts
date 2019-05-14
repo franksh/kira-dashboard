@@ -19,7 +19,7 @@ import {
   Choropleth,
   DistData
 } from "../services/data-processing.service";
-import { DISTRICTSDATA } from "../berlin-bezirke";
+import { DISTRICTSDATA } from "../berlin-bezirke-simpl";
 import { DISTRICT_COLORS } from "../districtcolors";
 import { HOSPITAL_COLORS } from "../hospitalcolors";
 import { SimulationDataService } from "../services/simulation-data.service";

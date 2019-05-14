@@ -16,7 +16,7 @@ import * as _ from "lodash";
 import { SimSnapshot, SimulationResult } from "./simulation-result";
 import { DisplayTime } from "../display-control/display-time";
 import { DisplayControlService } from "./display-control.service";
-import { DISTRICTSDATA } from "../berlin-bezirke";
+import { DISTRICTSDATA } from "../berlin-bezirke-simpl";
 import { HOSPITALDATA } from "../hospitals-berlin";
 import { SIMMOCKUP } from "./simulation-result-mockup-2";
 import { SimulationDataService } from "./simulation-data.service";
@@ -64,7 +64,7 @@ export class DataProcessing {
     private displaycontrolservice: DisplayControlService,
     private simulationdataservice: SimulationDataService
   ) {
-
+    
     displaycontrolservice.displaytime$.subscribe((time) => this.changesslectedsnapshot(time.timestamp))
 
     this.displaytimesub = combineLatest(
@@ -90,11 +90,10 @@ export class DataProcessing {
 
     simulationdataservice.simulationresult$.subscribe(simresult => {
       console.log("getting simresult");
+      console.log(simresult);
       this.simresult = simresult;
-      this.initChoropethHosp();
       this.initChoropethDist();
-      
-
+      this.initChoropethHosp();
     });
   }
 
@@ -104,9 +103,12 @@ export class DataProcessing {
     var snappoints = points(snapshot.points);
     for (var i in districtsdata.features) {
       var district = districtsdata.features[i].properties.spatial_alias;
-      var distpolygon = districtsdata.features[i];
+      var distpolygon = polygon(districtsdata.features[i].geometry.coordinates);
       var cases = pointsWithinPolygon(snappoints, distpolygon).features.length;
-      choropleth.distdata.push({ district: district, cases: cases });
+      choropleth.distdata.push({
+        district: district,
+        cases: pointsWithinPolygon(snappoints, distpolygon).features.length
+      });
       if (cases > choropleth.maximum) {
         choropleth.maximum = cases;
       }
@@ -115,7 +117,6 @@ export class DataProcessing {
   }
 
   initChoropethDist() {
-    console.log("Choropleth District starts")
     var allchoroplethdists: DistData[][] = [];
     this.maxvaluechoroplethdists = 0;
     for (var i in this.simresult.snapshots) {
@@ -128,7 +129,6 @@ export class DataProcessing {
       }
     }
     this.allchoroplethdistsSource.next(allchoroplethdists);
-    console.log("Choropleth Districts ready")
   }
 
   computeChoroplethHosp(
@@ -152,7 +152,6 @@ export class DataProcessing {
   }
 
   initChoropethHosp() {
-    console.log("Choropleth Hospital starts")
     var hospitalcoodinates = [];
     var hospitalnames = [];
     for (var i in this.hospitaldata) {
@@ -167,6 +166,7 @@ export class DataProcessing {
       var hospitalname = hospitalnames[i];
       this.voronoihospitals.features[i].properties.name = hospitalname;
     }
+
     var allchoroplethhosp: DistData[][] = [];
     this.maxvaluechoroplethhosp = 0;
     for (var i in this.simresult.snapshots) {
@@ -183,7 +183,6 @@ export class DataProcessing {
       }
     }
     this.allchoroplethhospSource.next(allchoroplethhosp);
-    console.log("Choropleth Hospital ready")
   }
 
   getvoronoihospitals(): any {
