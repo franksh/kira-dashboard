@@ -103,12 +103,9 @@ export class DataProcessing {
     var snappoints = points(snapshot.points);
     for (var i in districtsdata.features) {
       var district = districtsdata.features[i].properties.spatial_alias;
-      var distpolygon = polygon(districtsdata.features[i].geometry.coordinates);
+      var distpolygon = districtsdata.features[i];
       var cases = pointsWithinPolygon(snappoints, distpolygon).features.length;
-      choropleth.distdata.push({
-        district: district,
-        cases: pointsWithinPolygon(snappoints, distpolygon).features.length
-      });
+      choropleth.distdata.push({district: district, cases: cases});
       if (cases > choropleth.maximum) {
         choropleth.maximum = cases;
       }
