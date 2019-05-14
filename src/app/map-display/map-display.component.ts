@@ -10,18 +10,16 @@ import { Observable, Subscription } from "rxjs";
 
 declare var L;
 declare var HeatmapOverlay;
-import pointsWithinPolygon from "@turf/points-within-polygon";
-import { points, polygon } from "@turf/helpers";
 import * as _ from "lodash";
 
 import { SimSnapshot, SimulationResult } from "../services/simulation-result";
 import { DisplayTime } from "../display-control/display-time";
 import { DisplayControlService } from "../services/display-control.service";
 import {
-  ChoroplethService,
+  DataProcessing,
   DistData,
   Choropleth
-} from "../services/choropleth.service";
+} from "../services/data-processing.service";
 import { DISTRICTSDATA } from "../berlin-bezirke";
 import { DISTRICT_COLORS } from "../districtcolors";
 import { HOSPITAL_COLORS } from "../hospitalcolors";
@@ -91,7 +89,7 @@ export class MapDisplayComponent implements AfterViewInit {
 
   constructor(
     private displaycontrolservice: DisplayControlService,
-    public choroplethservice: ChoroplethService,
+    public dataprocessing: DataProcessing,
     private zone: NgZone
   ) {
     this.displaycontrolservice.heatmapactive$.subscribe(state => {
@@ -113,14 +111,14 @@ export class MapDisplayComponent implements AfterViewInit {
       this.updateLayers();
     });
 
-    this.selectedsnapshotsub = displaycontrolservice.selectedsnapshot$.subscribe(
+    this.selectedsnapshotsub = dataprocessing.selectedsnapshot$.subscribe(
       selectedsnapshot => {
         this.changeHeatmap(selectedsnapshot.points);
         this.updateLayers();
       }
     );
 
-    this.districtchoroplethsub = choroplethservice.selectedchoroplethdist$.subscribe(
+    this.districtchoroplethsub = dataprocessing.selectedchoroplethdist$.subscribe(
       (choropleth: Choropleth) => {
         this.distchorolayers = [];
         var districtsgeojson = L.geoJSON(DISTRICTSDATA as any);
@@ -139,11 +137,11 @@ export class MapDisplayComponent implements AfterViewInit {
         this.updateLayers();
       }
     );
-    this.hospitalchoroplethsub = choroplethservice.selectedchoroplethhosp$.subscribe(
+    this.hospitalchoroplethsub = dataprocessing.selectedchoroplethhosp$.subscribe(
       (choropleth: Choropleth) => {
         this.hospchorolayers = [];
         var hospitalgeojson = L.geoJSON(
-          choroplethservice.getvoronoihospitals()
+          dataprocessing.getvoronoihospitals()
         );
         hospitalgeojson.eachLayer(layer => {
           var hospitalname = layer.feature.properties.name;
@@ -219,7 +217,7 @@ export class MapDisplayComponent implements AfterViewInit {
     displaycontrolservice.selectedhospitals$.subscribe(hospitals => {
       this.selectedhospitals = hospitals;
       this.hospgeolayers = [];
-      var hospitalgeojson = L.geoJSON(choroplethservice.getvoronoihospitals());
+      var hospitalgeojson = L.geoJSON(dataprocessing.getvoronoihospitals());
       hospitalgeojson.eachLayer(layer => {
         layer.options.color = HOSPITAL_COLORS[layer.feature.properties.name];
         layer.options.fillOpacity = 0;

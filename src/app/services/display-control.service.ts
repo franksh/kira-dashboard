@@ -5,7 +5,6 @@ import * as _ from "lodash";
 
 import { SimSnapshot, SimulationResult } from "./simulation-result";
 import { DisplayTime } from "../display-control/display-time";
-import { SimulationDataService } from "./simulation-data.service";
 
 @Injectable({
   providedIn: "root"
@@ -13,10 +12,8 @@ import { SimulationDataService } from "./simulation-data.service";
 export class DisplayControlService {
   // Observable sources
   private displaytimeSource = new Subject<DisplayTime>();
-  private selectedsnapshotSource = new Subject<SimSnapshot>();
   private selecteddistrictsSource = new Subject<string[]>();
   private selectedhospitalsSource = new Subject<string[]>();
-
   private heatmapactiveSource = new Subject<boolean>();
   private choroplethactiveSource = new Subject<boolean>();
   private choroplethmodeSource = new Subject<string>();
@@ -24,7 +21,6 @@ export class DisplayControlService {
 
   // Observable streams
   displaytime$ = this.displaytimeSource.asObservable();
-  selectedsnapshot$ = this.selectedsnapshotSource.asObservable();
   selecteddistricts$ = this.selecteddistrictsSource.asObservable();
   selectedhospitals$ = this.selectedhospitalsSource.asObservable();
   heatmapactive$ = this.heatmapactiveSource.asObservable();
@@ -32,15 +28,9 @@ export class DisplayControlService {
   choroplethmode$ = this.choroplethmodeSource.asObservable();
   selectactive$ = this.selectactiveSource.asObservable();
 
-  // Storage for simulation data
-  simresult: SimulationResult;
-
   changeTime(ts: number): void {
     var time = new DisplayTime(ts);
     this.displaytimeSource.next(time);
-    this.selectedsnapshotSource.next(
-      this.simresult.snapshots.find(snaps => snaps.timestamp === ts)
-    );
   }
 
   changeSelectedDistricts(districts: string[]): void {
@@ -68,9 +58,6 @@ export class DisplayControlService {
     this.selectactiveSource.next(state);
   }
 
-  constructor(private simulationdataservice: SimulationDataService) {
-    simulationdataservice.simulationresult$.subscribe(
-      simresult => (this.simresult = simresult)
-    );
+  constructor() {
   }
 }

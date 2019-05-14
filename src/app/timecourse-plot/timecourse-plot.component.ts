@@ -14,8 +14,8 @@ import * as _ from "lodash";
 
 import { SimSnapshot, SimulationResult } from "../services/simulation-result";
 import { DisplayControlService } from "../services/display-control.service";
-import { ChoroplethService } from "../services/choropleth.service";
-import { DISTRICTSDATA } from "../berlin-bezirke";
+import { DataProcessing } from "../services/data-processing.service";
+import { DISTRICTSDATA } from "../berlin-bezirke-simpl";
 import { SimulationDataService } from "../services/simulation-data.service";
 
 export interface CasesTimecourse {
@@ -74,7 +74,7 @@ export class TimecoursePlotComponent {
 
   constructor(
     private displaycontrolservice: DisplayControlService,
-    private choroplethservice: ChoroplethService,
+    private dataprocessing: DataProcessing,
     private simulationdataservice: SimulationDataService
   ) {
     displaycontrolservice.choroplethmode$.subscribe(state => {
@@ -84,7 +84,7 @@ export class TimecoursePlotComponent {
     });
 
     combineLatest(
-      choroplethservice.allchoroplethdists$,
+      dataprocessing.allchoroplethdists$,
       displaycontrolservice.selecteddistricts$,
       simulationdataservice.listts$
     ).subscribe(([choropleths, districts, listts]) => {
@@ -115,7 +115,7 @@ export class TimecoursePlotComponent {
     });
 
     combineLatest(
-      choroplethservice.allchoroplethhosp$,
+      dataprocessing.allchoroplethhosp$,
       displaycontrolservice.selectedhospitals$,
       simulationdataservice.listts$
     ).subscribe(([choropleths, hospital, listts]) => {

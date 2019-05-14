@@ -16,7 +16,7 @@ import * as _ from "lodash";
 import { SimSnapshot, SimulationResult } from "./simulation-result";
 import { DisplayTime } from "../display-control/display-time";
 import { DisplayControlService } from "./display-control.service";
-import { DISTRICTSDATA } from "../berlin-bezirke";
+import { DISTRICTSDATA } from "../berlin-bezirke-simpl";
 import { HOSPITALDATA } from "../hospitals-berlin";
 import { SIMMOCKUP } from "./simulation-result-mockup-2";
 import { SimulationDataService } from "./simulation-data.service";
@@ -34,7 +34,7 @@ export interface Choropleth {
 @Injectable({
   providedIn: "root"
 })
-export class ChoroplethService {
+export class DataProcessing {
   simresult: SimulationResult;
   districtsdata = DISTRICTSDATA;
   hospitaldata = HOSPITALDATA;
@@ -55,12 +55,18 @@ export class ChoroplethService {
   selectedchoroplethhospSource = new Subject<Choropleth>();
   selectedchoroplethhosp$ = this.selectedchoroplethhospSource.asObservable();
 
+  selectedsnapshotSource = new Subject<SimSnapshot>();
+  selectedsnapshot$ = this.selectedsnapshotSource.asObservable();
+
   displaytimesub: Subscription;
 
   constructor(
     private displaycontrolservice: DisplayControlService,
     private simulationdataservice: SimulationDataService
   ) {
+    
+    displaycontrolservice.displaytime$.subscribe((time) => this.changesslectedsnapshot(time.timestamp))
+
     this.displaytimesub = combineLatest(
       displaycontrolservice.displaytime$,
       this.allchoroplethdists$
@@ -97,12 +103,9 @@ export class ChoroplethService {
     var snappoints = points(snapshot.points);
     for (var i in districtsdata.features) {
       var district = districtsdata.features[i].properties.spatial_alias;
-      var distpolygon = polygon(districtsdata.features[i].geometry.coordinates);
+      var distpolygon = districtsdata.features[i];
       var cases = pointsWithinPolygon(snappoints, distpolygon).features.length;
-      choropleth.distdata.push({
-        district: district,
-        cases: pointsWithinPolygon(snappoints, distpolygon).features.length
-      });
+      choropleth.distdata.push({district: district, cases: cases});
       if (cases > choropleth.maximum) {
         choropleth.maximum = cases;
       }
@@ -181,5 +184,11 @@ export class ChoroplethService {
 
   getvoronoihospitals(): any {
     return this.voronoihospitals;
+  }
+
+  changesslectedsnapshot(ts: number): void {
+    this.selectedsnapshotSource.next(
+      this.simresult.snapshots.find(snaps => snaps.timestamp === ts)
+    );
   }
 }
