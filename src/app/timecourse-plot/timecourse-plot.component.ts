@@ -41,7 +41,7 @@ export class TimecoursePlotComponent {
     datahosp: [],
     layout: {
       xaxis: {
-        title: "Time [s]",
+        title: "Time [h]",
         titlefont: {
           family: "Roboto, sans-serif",
           size: 18,
@@ -49,7 +49,7 @@ export class TimecoursePlotComponent {
         }
       },
       yaxis: {
-        title: "# of Cases",
+        title: "Number of Cases",
         titlefont: {
           family: "Roboto, sans-serif",
           size: 18,
@@ -58,7 +58,7 @@ export class TimecoursePlotComponent {
       },
       autoresize: true,
       margin: {
-        l: 35,
+        l: 60,
         r: 15,
         b: 45,
         t: 20,
@@ -88,8 +88,6 @@ export class TimecoursePlotComponent {
       displaycontrolservice.selecteddistricts$,
       simulationdataservice.listts$
     ).subscribe(([choropleths, districts, listts]) => {
-      console.log(choropleths);
-
       this.graph.datadist = [];
       var x = Array(listts.length).fill(0);
       var y = Array(listts.length).fill(0);

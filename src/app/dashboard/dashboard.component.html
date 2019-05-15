@@ -1,6 +1,7 @@
+<app-progress-spinner [isLoading]="isLoading"></app-progress-spinner>
 <div class="map-divs" id="map-div">
   <mat-card class="header-info">
-    <app-header-info></app-header-info>
+    <app-header-info (startLoading)="onToggleLoading($event)"></app-header-info>
   </mat-card>
   <mat-card class="map-card">
     <mat-card-content>
@@ -8,7 +9,9 @@
     </mat-card-content>
   </mat-card>
   <mat-card class="control-card">
-    <app-display-control></app-display-control>
+    <app-display-control
+      (endLoading)="onToggleLoading($event)"
+    ></app-display-control>
   </mat-card>
 </div>
 

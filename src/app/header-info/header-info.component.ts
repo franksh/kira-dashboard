@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { MatSelectChange } from "@angular/material";
 import { SimulationDataService } from "../services/simulation-data.service";
 import { DisplayControlService } from "../services/display-control.service";
@@ -9,6 +9,9 @@ import { DisplayControlService } from "../services/display-control.service";
   styleUrls: ["./header-info.component.css"]
 })
 export class HeaderInfoComponent implements OnInit {
+  defaultPlace = "PPLACE";
+  @Output("startLoading") startLoading = new EventEmitter();
+
   constructor(
     private simulationdataservice: SimulationDataService,
     private displaycontrolservice: DisplayControlService
@@ -19,5 +22,8 @@ export class HeaderInfoComponent implements OnInit {
   outbreakLocationChange($event: MatSelectChange) {
     // this.displaycontrolservice.changeChoroplethmode($event.value);
     this.simulationdataservice.loadSimulationData($event.value);
+    this.startLoading.emit({
+      isLoading: true
+    });
   }
 }

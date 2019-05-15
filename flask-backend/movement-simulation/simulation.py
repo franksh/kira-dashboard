@@ -50,6 +50,7 @@ class MovementSimulation():
         # Dynamic variables
         self.trajectories = None
         self.outbreak_location = None
+        self.outbreak_time = None
 
         self.initialize()
 
@@ -194,6 +195,7 @@ class MovementSimulation():
             import time
             time_start = time.time()
 
+        self.outbreak_time = outbreak_time
         t_max = self.T_SIMULATE + outbreak_time
 
         # start_locs = self._get_start_locations_at_outbreak_location(
@@ -576,7 +578,7 @@ class MovementSimulation():
 
         # Save File
         filename = "snapshots_{}_N{}_T{}.json".format(
-            LOCNAME, self.N_IND, self.T_SIMULATE
+            LOCNAME, self.N_IND, self.outbreak_time
         )
 
         with open(self.data_dir_output + filename, "w") as write_file:
@@ -596,6 +598,10 @@ class MovementSimulation():
         # # Add lat/lon information
         df = pd.merge(df, self.LOC_DENSITY_DATA,
                       on='loc_id', how='left', sort=True)
+        df = df.sort_values(by=['ind', 't'])
+
+        # shift outbreak time
+        df['t'] -= self.outbreak_time
 
         # Keep only relevant info
         df = df[['ind', 't', 'lon', 'lat']]
@@ -678,7 +684,7 @@ if __name__ == '__main__':
     # outbreak_location = [52.509352, 13.475739]  # Random
     # outbreak_location = [52.509352, 33.475739]  # Random
 
-    outbreak_time = 0
+    outbreak_time = 12
     sim.run_simulation(outbreak_location, outbreak_time)
     sim.save_trajectories()
     breakpoint()

@@ -47,7 +47,7 @@ export class TimecoursePlotIndividualComponent {
     datahosp: [],
     layout: {
       xaxis: {
-        title: "Time [s]",
+        title: "Time [h]",
         titlefont: {
           family: "Roboto, sans-serif",
           size: 18,
@@ -55,7 +55,7 @@ export class TimecoursePlotIndividualComponent {
         }
       },
       yaxis: {
-        title: "# of Cases",
+        title: "Number of Cases",
         titlefont: {
           family: "Roboto, sans-serif",
           size: 18,
@@ -64,7 +64,7 @@ export class TimecoursePlotIndividualComponent {
       },
       autoresize: true,
       margin: {
-        l: 35,
+        l: 60,
         r: 15,
         b: 45,
         t: 20,
