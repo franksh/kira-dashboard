@@ -1,4 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  Output,
+  EventEmitter
+} from "@angular/core";
 import { MatCheckboxChange, MatButtonToggleChange } from "@angular/material";
 import { FormControl } from "@angular/forms";
 import { Subscription } from "rxjs";
@@ -31,6 +37,8 @@ export class DisplayControlComponent implements OnInit {
   choroplethactive: boolean;
   selectactive: boolean;
 
+  @Output("endLoading") endLoading = new EventEmitter();
+
   constructor(
     private displaycontrolservice: DisplayControlService,
     private dataprocessing: DataProcessing,
@@ -51,7 +59,7 @@ export class DisplayControlComponent implements OnInit {
       console.log(listts);
       this.maxtime = _.last(listts);
       this.mintime = _.first(listts);
-      this.initiateSubsciptions()
+      this.initiateSubsciptions();
     });
   }
 
@@ -98,6 +106,9 @@ export class DisplayControlComponent implements OnInit {
     // this.changeSelectedHospitals;
     this.dataprocessing.initChoropethDist();
     this.dataprocessing.initChoropethHosp();
+    this.endLoading.emit({
+      isLoading: false
+    });
   }
 
   heatmapactiveChange($event) {

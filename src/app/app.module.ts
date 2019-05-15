@@ -19,7 +19,8 @@ import {
   MatButtonToggleModule,
   MatToolbarModule,
   MatExpansionModule,
-  MatSliderModule
+  MatSliderModule,
+  MatProgressSpinnerModule
 } from "@angular/material";
 import { LayoutModule } from "@angular/cdk/layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -35,7 +36,8 @@ import { TableDistrictsComponent } from "./table-districts/table-districts.compo
 import { TimecoursePlotComponent } from "./timecourse-plot/timecourse-plot.component";
 import { TimecoursePlotIndividualComponent } from "./timecourse-plot-individual/timecourse-plot-individual.component";
 import { HttpModule } from "@angular/http";
-import { HeaderInfoComponent } from './header-info/header-info.component';
+import { HeaderInfoComponent } from "./header-info/header-info.component";
+import { ProgressSpinnerComponent } from "./progress-spinner/progress-spinner.component";
 
 @NgModule({
   declarations: [
@@ -46,7 +48,8 @@ import { HeaderInfoComponent } from './header-info/header-info.component';
     TableDistrictsComponent,
     TimecoursePlotComponent,
     TimecoursePlotIndividualComponent,
-    HeaderInfoComponent
+    HeaderInfoComponent,
+    ProgressSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -72,6 +75,7 @@ import { HeaderInfoComponent } from './header-info/header-info.component';
     MatButtonToggleModule,
     MatToolbarModule,
     MatExpansionModule,
+    MatProgressSpinnerModule,
     PlotlyModule,
     LeafletModule.forRoot()
   ],

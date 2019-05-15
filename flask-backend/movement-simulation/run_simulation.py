@@ -8,10 +8,13 @@ LOCATIONS = {
     'OLYMP': [52.515134, 13.239560],  # Olympiastadium
 }
 
-OUTBREAK_LOCATION = 'PPLACE'
+# OUTBREAK_LOCATION = 'PPLACE'
 # OUTBREAK_LOCATION = 'APLACE'
-# OUTBREAK_LOCATION = 'OLYMP'
-OUTBREAK_TIME = 0
+OUTBREAK_LOCATION = 'OLYMP'
+
+# Outbreak time ranges hourly from monday 0:00 (0) to sunday 23:00 (168)
+# OUTBREAK_TIME = 0
+OUTBREAK_TIME = 12
 
 
 if __name__ == '__main__':

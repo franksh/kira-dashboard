@@ -11,6 +11,7 @@
   </mat-label>
   <mat-select
     matNativeControle
+    [value]="defaultPlace"
     (selectionChange)="outbreakLocationChange($event)"
   >
     <mat-option value="PPLACE">Potsdamer Platz</mat-option>

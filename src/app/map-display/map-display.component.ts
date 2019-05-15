@@ -129,9 +129,10 @@ export class MapDisplayComponent implements AfterViewInit {
             datum => datum.district == districtname
           ).cases;
           layer.options.opacity = 0.0;
-          layer.options.color = "#000000";
+          layer.options.color = "#003366";
           layer.options.fillOpacity =
-            (0.8 * choroplethvalue) / choropleth.maximum;
+            (0.8 * Math.log(choroplethvalue + 1)) /
+            Math.log(choropleth.maximum);
           this.distchorolayers.push(layer);
         });
         this.updateLayers();
@@ -140,9 +141,7 @@ export class MapDisplayComponent implements AfterViewInit {
     this.hospitalchoroplethsub = dataprocessing.selectedchoroplethhosp$.subscribe(
       (choropleth: Choropleth) => {
         this.hospchorolayers = [];
-        var hospitalgeojson = L.geoJSON(
-          dataprocessing.getvoronoihospitals()
-        );
+        var hospitalgeojson = L.geoJSON(dataprocessing.getvoronoihospitals());
         hospitalgeojson.eachLayer(layer => {
           var hospitalname = layer.feature.properties.name;
           var distdata: any[] = choropleth.distdata;
@@ -150,9 +149,10 @@ export class MapDisplayComponent implements AfterViewInit {
             datum => datum.district == hospitalname
           ).cases;
           layer.options.opacity = 0.0;
-          layer.options.color = "#000000";
+          layer.options.color = "#003366";
           layer.options.fillOpacity =
-            (0.8 * choroplethvalue) / choropleth.maximum;
+            (0.8 * Math.log(choroplethvalue + 1)) /
+            Math.log(choropleth.maximum);
           this.hospchorolayers.push(layer);
         });
         this.updateLayers();
