@@ -27,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { LeafletModule } from "@asymmetrik/ngx-leaflet";
 import { PlotlyModule } from "angular-plotly.js";
+import { Ng5SliderModule } from 'ng5-slider';
 
 import { AppComponent } from "./app.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
@@ -77,7 +78,8 @@ import { ProgressSpinnerComponent } from "./progress-spinner/progress-spinner.co
     MatExpansionModule,
     MatProgressSpinnerModule,
     PlotlyModule,
-    LeafletModule.forRoot()
+    LeafletModule.forRoot(),
+    Ng5SliderModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

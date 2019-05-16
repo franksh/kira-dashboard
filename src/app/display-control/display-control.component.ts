@@ -10,6 +10,7 @@ import { FormControl } from "@angular/forms";
 import { Subscription } from "rxjs";
 
 import * as _ from "lodash";
+import { Options } from 'ng5-slider';
 
 import { DisplayTime } from "./display-time";
 import { DisplayControlService } from "../services/display-control.service";
@@ -37,6 +38,19 @@ export class DisplayControlComponent implements OnInit {
   choroplethactive: boolean;
   selectactive: boolean;
 
+
+  options: Options = {
+    floor: 0,
+    ceil: 100,
+    showTicks: true,
+    tickStep: 24,
+    getLegend: (value: number): string => {
+      let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+      return days[Math.floor(value / 24) % 7]
+    }
+  };
+
+
   @Output("endLoading") endLoading = new EventEmitter();
 
   constructor(
@@ -57,9 +71,12 @@ export class DisplayControlComponent implements OnInit {
     simulationdataservice.listts$.subscribe(listts => {
       console.log("getting listts");
       console.log(listts);
-      this.maxtime = _.last(listts);
-      this.mintime = _.first(listts);
-      this.initiateSubsciptions();
+      const newOptions: Options = Object.assign({}, this.options);
+      newOptions.ceil = _.last(listts);
+      newOptions.floor = _.first(listts);
+
+      this.options = newOptions;
+      this.initiateSubsciptions()
     });
   }
 
