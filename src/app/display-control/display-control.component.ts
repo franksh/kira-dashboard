@@ -44,6 +44,9 @@ export class DisplayControlComponent implements OnInit {
     ceil: 100,
     showTicks: true,
     tickStep: 24,
+    translate: (value: number): string => {
+          return Math.floor(value / 24) + 'd ' + value % 24 + 'h';
+      },
     getLegend: (value: number): string => {
       let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
       return days[Math.floor(value / 24) % 7]
@@ -70,7 +73,6 @@ export class DisplayControlComponent implements OnInit {
     });
     simulationdataservice.listts$.subscribe(listts => {
       console.log("getting listts");
-      console.log(listts);
       const newOptions: Options = Object.assign({}, this.options);
       newOptions.ceil = _.last(listts);
       newOptions.floor = _.first(listts);
@@ -78,6 +80,13 @@ export class DisplayControlComponent implements OnInit {
       this.options = newOptions;
       this.initiateSubsciptions()
     });
+    simulationdataservice.simulationstart$.subscribe(simstart => {
+      const newOptions: Options = Object.assign({}, this.options);
+      newOptions.getLegend = (value: number): string => {
+      let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+      let index_first_day = days.indexOf(simstart.weekday);
+      return days[(Math.floor(value / 24) % 7) + index_first_day] +" "+ simstart.timeoftheday + ":00";
+    }});
   }
 
   changeTime(ts: number): void {
