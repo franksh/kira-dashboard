@@ -3,7 +3,7 @@ import { Observable, Subject, from } from "rxjs";
 import { Http, Response } from "@angular/http";
 import { map, switchMap } from "rxjs/operators";
 
-import { SimulationResult } from "./simulation-result";
+import { SimulationResult, SimulationStart } from "./simulation-result";
 import { SIMMOCKUP } from "./simulation-result-mockup";
 import { environment } from "../../environments/environment";
 
@@ -17,6 +17,8 @@ export class SimulationDataService {
   simulationresult$ = this.simulationresultSource.asObservable();
   listtsSource = new Subject<number[]>();
   listts$ = this.listtsSource.asObservable();
+  simulationstartSource  = new Subject<SimulationStart>();
+  simulationstart$ = this.simulationstartSource.asObservable();
 
   // Load actual simulation data
   // stored in assets/data
@@ -33,6 +35,8 @@ export class SimulationDataService {
         }
         this.listtsSource.next(listts);
       });;
+    let simstart = new SimulationStart("Mon", 12)
+    this.simulationstartSource.next(simstart)
   }
 
   changeOutbreakLocation(outbreakLocation: string) {
