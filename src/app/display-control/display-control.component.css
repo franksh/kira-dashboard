@@ -28,5 +28,7 @@ mat-divider {
 }
 
 .basic-container {
-  padding: 5px;
+  padding: 8px;
+  min-height: 32px;
 }
+

@@ -1,7 +1,6 @@
 <div fxLayoutAlign="start stretch" fxLayoutGap="8px" class="control-toolbar">
 
   <button class="elem-margin" mat-button (click)="initiateSubsciptions()"> RESET</button>
-  <ng5-slider [value]="displaytime.timestamp" (valueChange)="changeTime($event)" [options]="options"></ng5-slider>
   <mat-divider [vertical]="true"></mat-divider>
   <mat-button-toggle-group appearance="legacy" class="elem-margin" [multiple]="true">
     <mat-button-toggle (change)="heatmapactiveChange($event)">Heatmap</mat-button-toggle>
@@ -17,7 +16,12 @@
 
 </div>
 
-
+<div class="basic-container">
+<div class="custom-slider">
+<ng5-slider [value]="displaytime.timestamp" (valueChange)="changeTime($event)" [options]="options"></ng5-slider>
+</div>
+</div>
+<div class="basic-container"></div>
 <!-- 
     
 
