@@ -9,3 +9,13 @@ export class SimulationResult {
   snapshots: SimSnapshot[];
   constructor(snapshots: SimSnapshot[]) {this.snapshots=snapshots};
 }
+
+
+export class SimulationStart {
+	timeoftheday: number
+	weekday: string // from ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+	constructor(weekday: string, timeoftheday: number) {
+		this.timeoftheday=timeoftheday
+		this.weekday=weekday
+	};
+}
