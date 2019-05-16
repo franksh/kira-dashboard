@@ -9,7 +9,8 @@ import { DisplayControlService } from "../services/display-control.service";
   styleUrls: ["./header-info.component.css"]
 })
 export class HeaderInfoComponent implements OnInit {
-  defaultPlace = "PPLACE";
+  outbreakPlace = "PPLACE";
+  outbreakTime = "12";
   @Output("startLoading") startLoading = new EventEmitter();
 
   constructor(
@@ -20,8 +21,17 @@ export class HeaderInfoComponent implements OnInit {
   ngOnInit() {}
 
   outbreakLocationChange($event: MatSelectChange) {
-    // this.displaycontrolservice.changeChoroplethmode($event.value);
-    this.simulationdataservice.loadSimulationData($event.value);
+    // this.simulationdataservice.loadSimulationData($event.value);
+    // this.startLoading.emit({
+    //   isLoading: true
+    // });
+  }
+
+  updateScenario() {
+    this.simulationdataservice.loadSimulationData(
+      this.outbreakPlace,
+      this.outbreakTime
+    );
     this.startLoading.emit({
       isLoading: true
     });
