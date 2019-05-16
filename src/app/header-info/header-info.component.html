@@ -1,21 +1,46 @@
-<mat-card-title>
-  KIRA Dashboard
-</mat-card-title>
+<mat-card-header>
+  <mat-card-title>
+    KIRA Dashboard
+  </mat-card-title>
+</mat-card-header>
 <mat-card-content>
   The dashboard shows the simulated movement of individuals from an outbreak
   location.
 </mat-card-content>
-<mat-form-field>
-  <mat-label>
-    Outbreak Location
-  </mat-label>
-  <mat-select
-    matNativeControle
-    [value]="defaultPlace"
-    (selectionChange)="outbreakLocationChange($event)"
-  >
-    <mat-option value="PPLACE">Potsdamer Platz</mat-option>
-    <mat-option value="APLACE">Alexanderplatz</mat-option>
-    <mat-option value="OLYMP">Olympiastadion</mat-option>
-  </mat-select>
-</mat-form-field>
+
+<mat-card>
+  <mat-form-field>
+    <mat-label>
+      Outbreak Location
+    </mat-label>
+    <mat-select
+      matNativeControle
+      [(value)]="outbreakPlace"
+      (selectionChange)="outbreakLocationChange($event)"
+    >
+      <mat-option value="PPLACE">Potsdamer Platz</mat-option>
+      <mat-option value="APLACE">Alexanderplatz</mat-option>
+      <mat-option value="OLYMP">Olympiastadion</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>
+      Outbreak Time
+    </mat-label>
+    <mat-select
+      matNativeControle
+      [(value)]="outbreakTime"
+      (selectionChange)="outbreakLocationChange($event)"
+    >
+      <mat-option value="12">Monday 12pm</mat-option>
+      <mat-option value="138">Saturday 18pm</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-card-actions>
+    <button mat-raised-button (click)="updateScenario()">
+      Update Scenario
+    </button>
+  </mat-card-actions>
+</mat-card>

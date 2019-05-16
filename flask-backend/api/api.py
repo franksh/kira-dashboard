@@ -50,12 +50,13 @@ class SimulationData(Resource):
         """
         # Load request parameters
         name = request.args.get('name', None)
+        time = request.args.get('time', None)
 
         # Load data
         snapshots = None
         # Try loading if name given
         if name is not None:
-            snapshots = self.load_snapshot(name)
+            snapshots = self.load_snapshot(name, time)
 
         # If no snapshots could be loaded with the given arguments,
         # load default data as backup
@@ -80,38 +81,54 @@ class SimulationData(Resource):
         snapshots = snapshots_json['snapshots']
         return snapshots
 
-    def load_snapshot(self, name):
+    def load_snapshot(self, name, time):
         """
         Load a snapshot from disk, that is identifiable by a specific name
+        and outbreak time
 
         Current valid names are:
         -- PPLACE: Potsdamer Platz
         -- APLACE: Alexanderplatz
         -- OLYMP: Olympiastadion
-        """
-        self.log("Loading snapshot for name={}".format(name))
-        snapshots = None
-        if name == 'PPLACE':
-            data_file = self.DATA_PATH + app.config['DATA_FILE_PPLACE']
-            self.log(" - Loading file {}".format(data_file))
-            with open(data_file, 'r') as read_file:
-                snapshots_json = json.load(read_file)
-            snapshots = snapshots_json['snapshots']
-        elif name == 'APLACE':
-            data_file = self.DATA_PATH + app.config['DATA_FILE_APLACE']
-            self.log(" - Loading file {}".format(data_file))
-            with open(data_file, 'r') as read_file:
-                snapshots_json = json.load(read_file)
-            snapshots = snapshots_json['snapshots']
-        elif name == 'OLYMP':
-            data_file = self.DATA_PATH + app.config['DATA_FILE_OLYMP']
-            self.log(" - Loading file {}".format(data_file))
-            with open(data_file, 'r') as read_file:
-                snapshots_json = json.load(read_file)
-            snapshots = snapshots_json['snapshots']
 
-        else:
-            self.log(" - no file found for given name")
+        Times:
+        -- 12: Monday 12 pm
+        -- 138: Saturday 18 pm
+        """
+        self.log("Loading snapshot for name={}, time={}".format(name, time))
+
+        snapshots = None
+
+        file_format = app.config['FILE_FORMAT']
+        file_name = file_format.format(name, time)
+        file_path = self.DATA_PATH + file_name
+        try:
+            with open(file_path, 'r') as read_file:
+                snapshots_json = json.load(read_file)
+            snapshots = snapshots_json['snapshots']
+            self.log(" - Loaded file {}".format(file_path))
+        except FileNotFoundError:
+            self.log(" - no file found for given name: " + file_path)
+            snapshots = self.load_default_data()
+        # if name == 'PPLACE':
+        #     data_file = self.DATA_PATH + app.config['DATA_FILE_PPLACE']
+        #     self.log(" - Loading file {}".format(data_file))
+        #     with open(data_file, 'r') as read_file:
+        #         snapshots_json = json.load(read_file)
+        #     snapshots = snapshots_json['snapshots']
+        # elif name == 'APLACE':
+        #     data_file = self.DATA_PATH + app.config['DATA_FILE_APLACE']
+        #     self.log(" - Loading file {}".format(data_file))
+        #     with open(data_file, 'r') as read_file:
+        #         snapshots_json = json.load(read_file)
+        #     snapshots = snapshots_json['snapshots']
+        # elif name == 'OLYMP':
+        #     data_file = self.DATA_PATH + app.config['DATA_FILE_OLYMP']
+        #     self.log(" - Loading file {}".format(data_file))
+        #     with open(data_file, 'r') as read_file:
+        #         snapshots_json = json.load(read_file)
+        #     snapshots = snapshots_json['snapshots']
+        # else:
         return snapshots
 
     ## UTILITY #########################

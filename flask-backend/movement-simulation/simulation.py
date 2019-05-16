@@ -678,13 +678,14 @@ class MovementSimulation():
 
 
 if __name__ == '__main__':
+    pass
 
-    sim = MovementSimulation()
-    outbreak_location = [52.509352, 13.375739]  # P Place
-    # outbreak_location = [52.509352, 13.475739]  # Random
-    # outbreak_location = [52.509352, 33.475739]  # Random
+    # sim = MovementSimulation()
+    # outbreak_location = [52.509352, 13.375739]  # P Place
+    # # outbreak_location = [52.509352, 13.475739]  # Random
+    # # outbreak_location = [52.509352, 33.475739]  # Random
 
-    outbreak_time = 12
-    sim.run_simulation(outbreak_location, outbreak_time)
-    sim.save_trajectories()
-    breakpoint()
+    # outbreak_time = 12
+    # sim.run_simulation(outbreak_location, outbreak_time)
+    # sim.save_trajectories()
+    # breakpoint()

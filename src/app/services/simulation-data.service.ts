@@ -11,32 +11,41 @@ import { environment } from "../../environments/environment";
   providedIn: "root"
 })
 export class SimulationDataService {
-
-
-  simulationresultSource = new Subject<SimulationResult>(); 
+  simulationresultSource = new Subject<SimulationResult>();
   simulationresult$ = this.simulationresultSource.asObservable();
   listtsSource = new Subject<number[]>();
   listts$ = this.listtsSource.asObservable();
-  simulationstartSource  = new Subject<SimulationStart>();
+  simulationstartSource = new Subject<SimulationStart>();
   simulationstart$ = this.simulationstartSource.asObservable();
 
   // Load actual simulation data
   // stored in assets/data
-  loadSimulationData(outbreakLocation = "PPLACE") {
-    let dataPath = environment.apiEndpoint + "?name=" + outbreakLocation;
+  loadSimulationData(outbreakLocation = "PPLACE", outbreakTime = "12") {
+    let dataPath =
+      environment.apiEndpoint +
+      "?name=" +
+      outbreakLocation +
+      "&time=" +
+      outbreakTime;
     console.log("Fetching data: ", dataPath);
     this.http.get(dataPath).subscribe(response => {
-        console.log("updating simulationresult");
-        let simResult = new SimulationResult(response.json());
-        this.simulationresultSource.next(simResult);
-        let listts: number[] = [];
-        for (var i in simResult.snapshots) {
-          listts.push(simResult.snapshots[i].timestamp);
-        }
-        this.listtsSource.next(listts);
-      });;
-    let simstart = new SimulationStart("Mon", 12)
-    this.simulationstartSource.next(simstart)
+      console.log("updating simulationresult");
+      let simResult = new SimulationResult(response.json());
+      this.simulationresultSource.next(simResult);
+      let listts: number[] = [];
+      for (var i in simResult.snapshots) {
+        listts.push(simResult.snapshots[i].timestamp);
+      }
+      this.listtsSource.next(listts);
+    });
+    let simstart;
+    if (outbreakTime == "12") {
+      simstart = new SimulationStart("Mon", 12);
+    }
+    if (outbreakTime == "138") {
+      simstart = new SimulationStart("Sat", 18);
+    }
+    this.simulationstartSource.next(simstart);
   }
 
   changeOutbreakLocation(outbreakLocation: string) {
@@ -44,8 +53,6 @@ export class SimulationDataService {
   }
 
   constructor(private http: Http) {
-
     this.loadSimulationData();
-
   }
 }

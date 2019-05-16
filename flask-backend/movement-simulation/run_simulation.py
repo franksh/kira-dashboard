@@ -14,7 +14,7 @@ OUTBREAK_LOCATION = 'OLYMP'
 
 # Outbreak time ranges hourly from monday 0:00 (0) to sunday 23:00 (168)
 # OUTBREAK_TIME = 0
-OUTBREAK_TIME = 12
+OUTBREAK_TIME = 138
 
 
 if __name__ == '__main__':
