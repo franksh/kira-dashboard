@@ -16,7 +16,7 @@ import { SimulationDataService } from "../services/simulation-data.service";
 @Component({
   selector: "app-display-control",
   templateUrl: "./display-control.component.html",
-  styleUrls: ["./display-control.component.css"]
+  styleUrls: ["./display-control.component.css", "./display-control.component.scss"]
 })
 export class DisplayControlComponent implements OnInit {
   mintime: number = 0;
@@ -76,9 +76,10 @@ export class DisplayControlComponent implements OnInit {
       const newOptions: Options = Object.assign({}, this.options);
       newOptions.getLegend = (value: number): string => {
       let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-      let index_first_day = days.indexOf(simstart.weekday);
-      return days[(Math.floor(value / 24) % 7) + index_first_day] +" "+ simstart.timeoftheday + ":00";
-    }});
+        let index_first_day = days.indexOf(simstart.weekday);
+        return days[(Math.floor(value / 24) + index_first_day) % 7] +" "+ simstart.timeoftheday + ":00";
+      }
+      this.options = newOptions;});
   }
 
   changeTime(ts: number): void {
