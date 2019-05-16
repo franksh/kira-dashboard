@@ -128,8 +128,10 @@ export class MapDisplayComponent implements AfterViewInit {
           var choroplethvalue = distdata.find(
             datum => datum.district == districtname
           ).cases;
-          layer.options.opacity = 0.0;
-          layer.options.color = "#003366";
+          layer.options.opacity = 0.8;
+          layer.options.color = "#FFFFFF";
+          layer.options.weight = 1;
+          layer.options.fillColor = "#003366";
           layer.options.fillOpacity =
             (0.8 * Math.log(choroplethvalue + 1)) /
             Math.log(choropleth.maximum);
@@ -148,8 +150,10 @@ export class MapDisplayComponent implements AfterViewInit {
           var choroplethvalue = distdata.find(
             datum => datum.district == hospitalname
           ).cases;
-          layer.options.opacity = 0.0;
-          layer.options.color = "#003366";
+          layer.options.opacity = 0.8;
+          layer.options.color = "#FFFFFF";
+          layer.options.weight = 1;
+          layer.options.fillColor = "#003366";
           layer.options.fillOpacity =
             (0.8 * Math.log(choroplethvalue + 1)) /
             Math.log(choropleth.maximum);
@@ -207,7 +211,7 @@ export class MapDisplayComponent implements AfterViewInit {
             }
           });
 
-          layer.options.opacity = 0.7;
+          layer.options.opacity = 0.8;
         }
         this.geolayers.push(layer);
       });
