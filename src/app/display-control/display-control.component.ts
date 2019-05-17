@@ -41,7 +41,7 @@ export class DisplayControlComponent implements OnInit {
 
   options: Options = {
     floor: 0,
-    ceil: 100,
+    ceil: 7*24,
     showTicks: true,
     tickStep: 24,
     translate: (value: number): string => {
@@ -49,7 +49,7 @@ export class DisplayControlComponent implements OnInit {
       },
     getLegend: (value: number): string => {
       let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-      return days[Math.floor(value / 24) % 7]
+      return days[(Math.floor(value / 24)) % 7] +" "+ 12 + ":00";
     }
   };
 
