@@ -8,3 +8,4 @@ node_modules/
 flask-backend/venv/
 
 flask-backend/data/input/*
+flask-backend/data/output/*
