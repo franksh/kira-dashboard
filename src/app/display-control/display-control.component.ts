@@ -83,10 +83,15 @@ export class DisplayControlComponent implements OnInit {
     simulationdataservice.simulationstart$.subscribe(simstart => {
       const newOptions: Options = Object.assign({}, this.options);
       newOptions.getLegend = (value: number): string => {
-      let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+        let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
         let index_first_day = days.indexOf(simstart.weekday);
-        return days[(Math.floor(value / 24) + index_first_day) % 7] +" "+ simstart.timeoftheday + ":00";
+        return days[(Math.floor((value+simstart.timeoftheday) / 24) + index_first_day) % 7] +" "+ ("0"+(value+simstart.timeoftheday)% 24).slice(-2)+":00";
       }
+
+      let ticksArray = [newOptions.floor]
+      ticksArray = ticksArray.concat(_.range(newOptions.floor + 24-simstart.timeoftheday, newOptions.ceil, 24))
+      ticksArray.push(newOptions.ceil);
+      newOptions.ticksArray = ticksArray
       this.options = newOptions;});
   }
 
