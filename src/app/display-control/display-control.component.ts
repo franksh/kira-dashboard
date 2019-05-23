@@ -16,7 +16,7 @@ import { DisplayTime } from "./display-time";
 import { DisplayControlService } from "../services/display-control.service";
 import { DataProcessing } from "../services/data-processing.service";
 import { DISTRICTSDATA } from "../berlin-bezirke-simpl";
-import { HOSPITALDATA } from "../hospitals-berlin";
+import { HOSPITALDATA,HOSPITALLIST_EMERGENCYCENTER, HOSPITALLIST_EMERGENCYHOSPITAL } from "../hospitals-berlin";
 import { SimulationDataService } from "../services/simulation-data.service";
 
 @Component({
@@ -124,8 +124,8 @@ export class DisplayControlComponent implements OnInit {
 
   getAllHospitals(): string[] {
     var hospitallist = [];
-    for (var i in HOSPITALDATA) {
-      hospitallist.push(HOSPITALDATA[i].address.hospital);
+    for (var i in HOSPITALLIST_EMERGENCYCENTER) {
+      hospitallist.push(HOSPITALLIST_EMERGENCYCENTER[i]);
     }
     return hospitallist;
   }

@@ -2,7 +2,7 @@
 __pycache__/
 
 src/assets/data/
-dist/angular-kira-dashboard-v01/
+dist/
 
 node_modules/
 flask-backend/venv/

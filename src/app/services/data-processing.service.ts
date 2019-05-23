@@ -17,7 +17,7 @@ import { SimSnapshot, SimulationResult } from "./simulation-result";
 import { DisplayTime } from "../display-control/display-time";
 import { DisplayControlService } from "./display-control.service";
 import { DISTRICTSDATA } from "../berlin-bezirke-simpl";
-import { HOSPITALDATA } from "../hospitals-berlin";
+import { HOSPITALDATA, HOSPITALLIST_EMERGENCYCENTER } from "../hospitals-berlin";
 import { SIMMOCKUP } from "./simulation-result-mockup-2";
 import { SimulationDataService } from "./simulation-data.service";
 
@@ -38,6 +38,7 @@ export class DataProcessing {
   simresult: SimulationResult;
   districtsdata = DISTRICTSDATA;
   hospitaldata = HOSPITALDATA;
+  hospitallist = HOSPITALLIST_EMERGENCYCENTER;
 
   maxvaluechoroplethdists: number;
   maxvaluechoroplethhosp: number;
@@ -150,17 +151,18 @@ export class DataProcessing {
 
   initChoropethHosp() {
     var hospitalcoodinates = [];
-    var hospitalnames = [];
+
     for (var i in this.hospitaldata) {
       var hospital = this.hospitaldata[i];
-      hospitalcoodinates.push([hospital.lon, hospital.lat]);
-      hospitalnames.push(hospital.address.hospital);
+      if (this.hospitallist.includes(hospital.properties.name)) {
+        hospitalcoodinates.push(hospital.geometry.coordinates);
+      }
     }
     var hospitalpoints = points(hospitalcoodinates);
     var bboxberlin = bbox(this.districtsdata);
     this.voronoihospitals = voronoi(hospitalpoints, { bbox: bboxberlin });
-    for (var i in hospitalnames) {
-      var hospitalname = hospitalnames[i];
+    for (var i in this.hospitallist) {
+      var hospitalname = this.hospitallist[i];
       this.voronoihospitals.features[i].properties.name = hospitalname;
     }
 
@@ -170,7 +172,7 @@ export class DataProcessing {
       var snapshot: SimSnapshot = this.simresult.snapshots[i];
       var ts = snapshot.timestamp;
       var choropleth = this.computeChoroplethHosp(
-        hospitalnames,
+        this.hospitallist,
         this.voronoihospitals,
         snapshot
       );

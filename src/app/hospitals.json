@@ -1,55 +1,9 @@
-export const HOSPITALLIST_EMERGENCYHOSPITAL = 
-[
-  "DRK Kliniken Berlin | Westend", 
-  "Martin-Luther-Krankenhaus", 
-  "Sankt Gertrauden-Krankenhaus", 
-  "Schlosspark-Klinik", 
-  "Vivantes - Klinikum Am Urban", 
-  "Vivantes - Klinikum im Friedrichshain - Standort Landsberger Allee", 
-  "Evangelisches Krankenhaus Königin Elisabeth Herzberge", 
-  "Sana Klinikum Lichtenberg", 
-  "Unfallkrankenhaus Berlin", 
-  "Vivantes - Klinikum Kaulsdorf", 
-  "Bundeswehrkrankenhaus Berlin", 
-  "Charité - Campus Charité Mitte", 
-  "Charité - Campus Virchow-Klinikum", 
-  "DRK Kliniken Berlin | Mitte", 
-  "Evangelische Elisabeth Klinik", 
-  "Franziskus-Krankenhaus",
-  "Jüdisches Krankenhaus Berlin", 
-  "St. Hedwig-Kliniken Berlin - St. Hedwig-Krankenhaus", 
-  "Vivantes - Klinikum Neukölln", 
-  "HELIOS Klinikum Berlin-Buch", 
-  "Maria Heimsuchung, Caritas-Klinik Pankow", 
-  "Park-Klinik Weißensee", 
-  "Dominikus-Krankenhaus", 
-  "Vivantes - Humboldt-Klinikum", 
-  "Evangelisches Waldkrankenhaus Spandau", 
-  "Gemeinschaftskrankenhaus Havelhöhe", 
-  "Vivantes - Klinikum Spandau", 
-  "Charité - Campus Benjamin Franklin", 
-  "Evangelisches Krankenhaus Hubertus", 
-  "HELIOS Klinikum Emil von Behring", 
-  "Krankenhaus Bethel Berlin", 
-  "Krankenhaus Waldfriede", 
-  "St. Marien-Krankenhaus Berlin", 
-  "St. Joseph-Krankenhaus (Tempelhof)", 
-  "Vivantes - Auguste-Viktoria-Klinikum", 
-  "Vivantes - Wenckebach-Klinikum", 
-  "DRK Kliniken Berlin | Köpenick", 
-  "St. Hedwig-Kliniken Berlin - Krankenhaus Hedwigshöhe"
-]
-export const HOSPITALLIST_EMERGENCYCENTER = 
-[
-  "Vivantes - Klinikum im Friedrichshain - Standort Landsberger Allee", 
-  "Unfallkrankenhaus Berlin",  
-  "Charité - Campus Virchow-Klinikum", 
-  "Vivantes - Klinikum Neukölln", 
-  "HELIOS Klinikum Berlin-Buch", 
-  "Charité - Campus Benjamin Franklin", 
-]
-export const HOSPITALDATA = 
-[
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-ide",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2019-05-23T08:44:02Z",
+  "features": [
     {
       "type": "Feature",
       "properties": {
@@ -78,18 +32,6 @@ export const HOSPITALDATA =
     {
       "type": "Feature",
       "properties": {
-        "name":"Franziskus-Krankenhaus"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          13.345347046852112,
-          52.50623052430767
-        ]
-      }},
-    {
-      "type": "Feature",
-      "properties": {
         "@id": "way/4637750",
         "amenity": "hospital",
         "name": "DRK Kliniken Berlin | Mitte",
@@ -108,7 +50,7 @@ export const HOSPITALDATA =
         "@id": "way/4750929",
         "amenity": "hospital",
         "emergency": "yes",
-        "name": "Charité - Campus Virchow-Klinikum",
+        "name": "Charité Campus Virchow Klinikum",
         "phone": "+49 30 45050",
         "website": "https://www.charite.de/",
         "wheelchair": "yes",
@@ -134,7 +76,7 @@ export const HOSPITALDATA =
         "addr:suburb": "Borsigwalde",
         "amenity": "hospital",
         "emergency": "yes",
-        "name": "Vivantes - Humboldt-Klinikum",
+        "name": "Vivantes Humboldt-Klinikum",
         "phone": "+49 30 130120",
         "website": "https://www.vivantes.de/huk",
         "wheelchair": "limited",
@@ -162,7 +104,7 @@ export const HOSPITALDATA =
         "amenity": "hospital",
         "contact:phone": "+4930 23110",
         "contact:website": "http://www.alexianer-berlin-hedwigkliniken.de/st_hedwig_krankenhaus",
-        "name": "St. Hedwig-Kliniken Berlin - St. Hedwig-Krankenhaus",
+        "name": "St. Hedwig-Krankenhaus",
         "name:en": "St. Hedwig Hospital",
         "name:nl": "St. Hedwigziekenhuis",
         "toilets:wheelchair": "yes",
@@ -433,8 +375,8 @@ export const HOSPITALDATA =
         "amenity": "hospital",
         "barrier": "fence",
         "emergency": "yes",
-        "name": "DRK Kliniken Berlin | Köpenick",
-        "name:de": "DRK Kliniken Berlin | Köpenick",
+        "name": "DRK Kliniken Berlin - Köpenick",
+        "name:de": "DRK Kliniken Berlin - Köpenick",
         "name:en": "German Red Cross Hospital Berlin Köpenick",
         "wheelchair": "yes",
         "wikidata": "Q19963300",
@@ -459,7 +401,7 @@ export const HOSPITALDATA =
         "barrier": "wall",
         "emergency": "yes",
         "loc_name": "Auguste-Victoria-Krankenhaus",
-        "name": "Vivantes - Auguste-Viktoria-Klinikum",
+        "name": "Auguste-Viktoria-Klinikum",
         "operator": "Vivantes",
         "phone": "+49 30 130200",
         "short_name": "AVK",
@@ -516,7 +458,7 @@ export const HOSPITALDATA =
         "addr:housenumber": "15",
         "addr:street": "Fröbelstraße",
         "amenity": "hospital",
-        "name": "Vivantes - Klinikum im Friedrichshain - Standort Landsberger Allee",
+        "name": "Vivantes Klinikum im Friedrichshain, Standort Prenzlauer Berg",
         "website": "https://www.vivantes.de/fuer-sie-vor-ort/klinikum-im-friedrichshain-prenzlauer-berg/",
         "wheelchair": "yes",
         "@geometry": "center"
@@ -565,7 +507,7 @@ export const HOSPITALDATA =
         "heritage": "4",
         "heritage:operator": "lda",
         "lda:criteria": "Gesamtanlage",
-        "name": "Vivantes - Wenckebach-Klinikum",
+        "name": "Vivantes Wenckebach-Klinikum",
         "old_name": "2. Garnison-Lazarett",
         "ref:lda": "09055132",
         "source": "Geoportal Berlin / Hauskoordinaten",
@@ -639,7 +581,7 @@ export const HOSPITALDATA =
         "addr:suburb": "Westend",
         "amenity": "hospital",
         "emergency": "yes",
-        "name": "DRK Kliniken Berlin | Westend",
+        "name": "DRK Kliniken Westend",
         "operator": "Deutsches Rotes Kreuz Schwesternschaft Berlin Gemeinnützige Krankenhaus GmbH",
         "phone": "+49303035-0",
         "ref": "DRK Kliniken Westend",
@@ -659,7 +601,7 @@ export const HOSPITALDATA =
         "@id": "way/53224317",
         "amenity": "hospital",
         "emergency": "yes",
-        "name": "Charité - Campus Benjamin Franklin",
+        "name": "Charité-Campus Benjamin Franklin",
         "toilets:wheelchair": "yes",
         "website": "https://www.charite.de/charite/standorte/campus_benjamin_franklin_cbf/",
         "wheelchair": "yes",
@@ -683,7 +625,7 @@ export const HOSPITALDATA =
         "addr:suburb": "Bohnsdorf",
         "amenity": "hospital",
         "emergency": "yes",
-        "name": "St. Hedwig-Kliniken Berlin - Krankenhaus Hedwigshöhe",
+        "name": "Krankenhaus Hedwigshöhe",
         "wheelchair": "yes",
         "wikidata": "Q1764107",
         "@geometry": "center"
@@ -754,7 +696,7 @@ export const HOSPITALDATA =
       "properties": {
         "@id": "way/99146927",
         "amenity": "hospital",
-        "name": "Maria Heimsuchung, Caritas-Klinik Pankow",
+        "name": "Maria Heimsuchung Caritas Klinikum Pankow",
         "wheelchair": "yes",
         "@geometry": "center"
       },
@@ -960,7 +902,7 @@ export const HOSPITALDATA =
         "addr:suburb": "Buckow",
         "amenity": "hospital",
         "emergency": "yes",
-        "name": "Vivantes - Klinikum Neukölln",
+        "name": "Vivantes Klinikum - Neukölln",
         "website": "https://www.vivantes.de/knk/",
         "wikidata": "Q2528989",
         "@geometry": "center"
@@ -1142,7 +1084,7 @@ export const HOSPITALDATA =
       "properties": {
         "@id": "way/160806223",
         "amenity": "hospital",
-        "name": "Vivantes - Klinikum Kaulsdorf",
+        "name": "Vivantes Klinikum Kaulsdorf",
         "website": "https://www.vivantes.de/khd",
         "wheelchair": "yes",
         "@geometry": "center"
@@ -1185,7 +1127,7 @@ export const HOSPITALDATA =
         "addr:street": "Wüsthoffstraße",
         "addr:suburb": "Tempelhof",
         "amenity": "hospital",
-        "name": "St. Joseph-Krankenhaus (Tempelhof)",
+        "name": "St. Joseph Krankenhaus",
         "name:en": "St. Joseph Hospital",
         "name:nl": "St. Joseph Ziekenhuis",
         "toilets:wheelchair": "yes",
@@ -1211,7 +1153,7 @@ export const HOSPITALDATA =
         "addr:street": "Schwanebecker Chaussee",
         "amenity": "hospital",
         "emergency": "yes",
-        "name": "HELIOS Klinikum Berlin-Buch",
+        "name": "HELIOS Klinikum Berlin Buch",
         "phone": "+49 30 94010",
         "toilets:wheelchair": "yes",
         "website": "http://www.helios-kliniken.de/klinik/berlin-buch.html",
@@ -1407,7 +1349,7 @@ export const HOSPITALDATA =
         "contact:phone": "+49 30 130210",
         "contact:website": "http://www.vivantes.de/kau",
         "emergency": "yes",
-        "name": "Vivantes - Klinikum am Urban",
+        "name": "Vivantes Klinikum am Urban",
         "reg_name": "Urban-Krankenhaus",
         "start_date": "1887",
         "wheelchair": "yes",
@@ -1479,7 +1421,7 @@ export const HOSPITALDATA =
         "addr:street": "Oranienburger Straße",
         "addr:suburb": "Wittenau",
         "amenity": "hospital",
-        "name": "Vivantes - Humboldt-Klinikum - Standort Oranienburger Straße",
+        "name": "Vivantes Humboldt-Klinikum - Standort Oranienburger Straße",
         "operator": "Vivantes",
         "phone": "+4930 130120",
         "toilets:wheelchair": "yes",
@@ -1536,7 +1478,7 @@ export const HOSPITALDATA =
       "properties": {
         "@id": "way/378933899",
         "amenity": "hospital",
-        "name": "Park-Klinik Weißensee",
+        "name": "Park Klinik Weißensee",
         "wheelchair": "yes",
         "wikidata": "Q1689390",
         "wikipedia": "de:Park-Klinik Weißensee",
@@ -1592,7 +1534,7 @@ export const HOSPITALDATA =
         "contact:phone": "+49 30 130130",
         "contact:phone:emergency": "+49 30 130132070",
         "contact:website": "http://www.vivantes.de/ksp",
-        "name": "Vivantes - Klinikum Spandau",
+        "name": "Vivantes Klinikum Spandau",
         "wheelchair": "yes",
         "@geometry": "center"
       },
@@ -1782,7 +1724,7 @@ export const HOSPITALDATA =
         "@id": "way/583306346",
         "amenity": "hospital",
         "emergency": "yes",
-        "name": "Charité - Campus Charité Mitte",
+        "name": "Charité Universitätsmedizin Berlin",
         "name:ru": "Шарите",
         "website": "https://www.charite.de/",
         "wheelchair": "yes",
@@ -1839,7 +1781,7 @@ export const HOSPITALDATA =
         "addr:suburb": "Lichterfelde",
         "amenity": "hospital",
         "emergency": "yes",
-        "name": "Krankenhaus Bethel Berlin",
+        "name": "Krankenhaus Bethel",
         "phone": "+49 30 77910",
         "toilets:wheelchair": "yes",
         "website": "https://www.bethelnet.de/kliniken/krankenhaus-bethel-berlin.html",
@@ -1864,7 +1806,7 @@ export const HOSPITALDATA =
         "addr:suburb": "Lankwitz",
         "amenity": "hospital",
         "emergency": "yes",
-        "name": "St. Marien-Krankenhaus Berlin",
+        "name": "Sankt-Marien-Krankenhaus",
         "phone": "+49 30 76783-0",
         "website": "http://www.marienkrankenhaus-berlin.de/",
         "@geometry": "center"
@@ -1970,3 +1912,4 @@ export const HOSPITALDATA =
       "id": "node/1693693605"
     }
   ]
+}
