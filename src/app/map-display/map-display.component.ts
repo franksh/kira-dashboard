@@ -11,6 +11,14 @@ import { Observable, Subscription } from "rxjs";
 declare var L;
 declare var HeatmapOverlay;
 import * as _ from "lodash";
+import transformScale from "@turf/transform-scale";
+import polygonToLine from "@turf/polygon-to-line";
+import lineToPolygon from "@turf/line-to-polygon";
+import lineOffset from "@turf/line-offset";
+import clone from "@turf/clone";
+import unkinkPolygon from "@turf/unkink-polygon";
+import area from "@turf/area";
+
 
 import { SimSnapshot, SimulationResult } from "../services/simulation-result";
 import { DisplayTime } from "../display-control/display-time";
@@ -221,7 +229,8 @@ export class MapDisplayComponent implements AfterViewInit {
     displaycontrolservice.selectedhospitals$.subscribe(hospitals => {
       this.selectedhospitals = hospitals;
       this.hospgeolayers = [];
-      var hospitalgeojson = L.geoJSON(dataprocessing.getvoronoihospitals());
+      var voronoihospitals = this.shrinkPolygons(dataprocessing.getvoronoihospitals())
+      var hospitalgeojson = L.geoJSON(voronoihospitals);
       hospitalgeojson.eachLayer(layer => {
         layer.options.color = HOSPITAL_COLORS[layer.feature.properties.name];
         layer.options.fillOpacity = 0;
@@ -312,5 +321,23 @@ export class MapDisplayComponent implements AfterViewInit {
       }
     }
     this.layertoggle = !this.layertoggle;
+  }
+
+  shrinkPolygons(polygons_input) {
+    var polygons = (JSON.parse(JSON.stringify(polygons_input)));
+    for (let i in polygons.features) {
+      var polygon = lineToPolygon(lineOffset(polygonToLine(polygons.features[i]),0.3));
+      polygon = unkinkPolygon(polygon);
+      var max_area = 0;
+      var max_idx = 0;
+      for (let j in polygon.features) {
+        if (area(polygon.features[j]) > max_area) {
+          max_area = area(polygon.features[j]);
+          max_idx = j;
+        }
+      }
+      polygons.features[i] = polygon.features[max_idx]
+    }
+    return polygons
   }
 }
