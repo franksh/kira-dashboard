@@ -13,6 +13,7 @@ import os
 import pickle
 import json
 import pandas as pd
+import geopandas as gpd
 import numpy as np
 from numpy.random import exponential
 
@@ -40,6 +41,8 @@ class MovementSimulation():
         self.CELL_LOC_MAP = None
         self.LOC_CELL_MAP = None
         self.CELL_BOUNDS = None
+
+        self.PPLACE_CLOUD_DATA = None
 
         self.VERBOSE = self.config['GENERAL']['VERBOSE']
 
@@ -75,6 +78,7 @@ class MovementSimulation():
         self._load_motionlogic_flow_OD()
         self._load_motionlogic_cells_bounds()
         self._load_loc_cellid_data()
+        self._load_pplace_cloud_data()
         self._create_cellid_loc_mapping()
 
     def _load_motionlogic_flow_OD(self):
@@ -139,6 +143,47 @@ class MovementSimulation():
         locs = locs.reset_index().rename(columns={'index': 'loc_id'})
         self.LOC_DENSITY_DATA = locs
 
+    def _load_pplace_cloud_data(self):
+        """
+        Loads the data from Karstens cloud simulation to
+        initialize the simulation with.
+
+        This extracts two main variables from the data:
+        - prob: The probability that an individual gets infected in cell i,
+            which is Einwohnezahl * qty_part (exposure)
+        - outbreak_delay: The time delay until someone can get infected there.
+            Assumption is that the cloud takes 1 hour to reach each qty_part-zone
+        """
+        if self.VERBOSE:
+            print(" -- Loading pplace cloud data ...")
+        file_path = self.data_dir_input + \
+            self.config['DATA']['PPLACE_CLOUD_FILE']
+
+        gdf = gpd.read_file(file_path)
+        # Calculate weight / probability to pick each place:
+        # Count einwohner * qty_part
+        weight = gdf['EW2017'] * gdf['qty_part']
+        gdf['prob'] = weight / weight.sum()
+
+        # Calculate outbreak delay time
+        outbreak_delays = {
+            200000: 0,
+            100000: 1,
+            30000: 2,
+            10000: 3,
+            3000: 4,
+            1000: 5,
+            300: 6,
+        }
+        gdf['outbreak_delay'] = gdf['qty_part'].map(outbreak_delays)
+
+        # Calc lat/lon data
+        gdf['lon'] = gdf.centroid.x
+        gdf['lat'] = gdf.centroid.y
+
+        # Save info
+        self.PPLACE_CLOUD_DATA = gdf[['prob', 'outbreak_delay', 'lat', 'lon']]
+
     def _create_cellid_loc_mapping(self):
         """
         Creates a mapping cell_id -> locs_in_cell
@@ -184,10 +229,10 @@ class MovementSimulation():
         """
 
         # Test whether parameters valid
-        try:
-            _ = self._get_cell_id_of_lat_lon(*outbreak_location)
-        except IndexError as e:
-            raise IndexError("The outbreak location lies outside Germany")
+        # try:
+        #     _ = self._get_cell_id_of_lat_lon(*outbreak_location)
+        # except IndexError as e:
+        #     raise IndexError("The outbreak location lies outside Germany")
 
         if self.VERBOSE:
             print("Starting Simulation ...")
@@ -198,19 +243,18 @@ class MovementSimulation():
         self.outbreak_time = outbreak_time
         t_max = self.T_SIMULATE + outbreak_time
 
-        # start_locs = self._get_start_locations_at_outbreak_location(
-            # outbreak_location)
-        start_loc = self._get_outbreak_location_as_start(outbreak_location)
-
         # Simulate individuals
         for ind in self.tqdm_counter(range(self.N_IND)):
-            self.t = outbreak_time
 
-            # loc_first = np.random.choice(start_locs)
-            loc_first = start_loc
-            cell_first = self._get_cell_of_loc(loc_first)
+            # Get start location and time delay
+            start_loc, delay = self._get_infection_loc_delay(outbreak_location)
+
+            # Set time
+            self.t = outbreak_time + delay
+
+            cell_first = self._get_cell_of_loc(start_loc)
             self._add_location_to_individual(
-                self.t, ind, loc_first, cell_first)
+                self.t, ind, start_loc, cell_first)
 
             self.t += self._get_jump_time(self.t)
             while self.t < t_max:
@@ -329,22 +373,42 @@ class MovementSimulation():
         loc_id, cell_id = locs.loc[idx][['loc_id', 'cell_id']]
         return (loc_id, cell_id)
 
-    def _get_outbreak_location_as_start(self, outbreak_location):
+    def _get_infection_loc_delay(self, outbreak_location):
         """
+        Returns outbreak location and the time delay when person got infected
+
         Returns the outbreak location as the start location. Adds it to
-        the location map
+        the location map. Returns also the time delay until person gets infected
+        (infection_time = outbreak_time + delay).
 
         Returns:
-        - location: The start location
+        - location: The start/infection location
+        - delay: Hours until person gets infected/starts running. In [0,6]
         """
-        # Steps:
-        # Get bounding box around outbreak location
-        bbox = self._get_location_bounding_box(*outbreak_location)
-        # Get the center
-        center = np.mean(np.array(bbox).reshape(2,2), axis=0)
-        # Create new location
-        location = self._create_new_location_at_lat_lon(*center[::-1])
-        return location
+        # If outbreak location is lat/lon coordinates:
+
+        if type(outbreak_location) == list:
+            # Steps:
+            # Get bounding box around outbreak location
+            bbox = self._get_location_bounding_box(*outbreak_location)
+            # Get the center
+            center = np.mean(np.array(bbox).reshape(2, 2), axis=0)
+            # Create new location
+            location = self._create_new_location_at_lat_lon(*center[::-1])
+            delay = 0
+        # If outbreak_location is a place
+        elif outbreak_location == 'PPLACE_CLOUD_DATA':
+            gdf = self.PPLACE_CLOUD_DATA
+
+            idx_loc = np.random.choice(len(gdf), p=gdf['prob'])
+            loc_data = gdf.loc[idx_loc]
+            location = self._create_new_location_at_lat_lon(loc_data['lat'],
+                                                            loc_data['lon'])
+            delay_min = loc_data['outbreak_delay']
+            delay = np.random.randint(delay_min, 7)
+        else:
+            raise ValueError("Outbreak location unknown: ", outbreak_location)
+        return location, delay
 
     def _get_start_locations_at_outbreak_location(self, outbreak_location):
         """
@@ -532,7 +596,6 @@ class MovementSimulation():
 
         return loc_id
 
-
     def _get_cell_id_of_lat_lon(self, lat, lon):
         """
         Returns the id of the cell in which the given coordinates lie
@@ -645,7 +708,7 @@ class MovementSimulation():
         # df = df[['lon', 'lat']]
         df = df.sort_values(by=['ind', 'loc'], axis=1)
         # Fill empty values
-        df = df.fillna(method='ffill').fillna(method='bfill')
+        df = df.fillna(method='ffill')  # .fillna(method='bfill')
 
         # Convert dataframe to key-value pair (timestamp-points) as
         # as is required from Angular
@@ -656,9 +719,10 @@ class MovementSimulation():
 
         snapshots = []
         for timestamp, points in zip(df.index, points_all):
+            points_not_nan = [point for point in points if not np.isnan(point[0])]
             snapshots.append({
                 'timestamp': timestamp,
-                'points': points
+                'points': points_not_nan
             })
 
         snapshots_json = {'snapshots': snapshots}

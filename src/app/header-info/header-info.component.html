@@ -1,7 +1,5 @@
 <mat-card-header>
-  <mat-card-title>
-    KIRA Dashboard
-  </mat-card-title>
+  <mat-card-title> KIRA Dashboard </mat-card-title>
 </mat-card-header>
 <mat-card-content>
   The dashboard shows the simulated movement of individuals from an outbreak
@@ -10,9 +8,7 @@
 
 <mat-card>
   <mat-form-field>
-    <mat-label>
-      Outbreak Location
-    </mat-label>
+    <mat-label> Outbreak Location </mat-label>
     <mat-select
       matNativeControle
       [(value)]="outbreakPlace"
@@ -21,13 +17,12 @@
       <mat-option value="PPLACE">Potsdamer Platz</mat-option>
       <mat-option value="APLACE">Alexanderplatz</mat-option>
       <mat-option value="OLYMP">Olympiastadion</mat-option>
+      <mat-option value="PPLACE_CLOUD">Potsdamer Platz (Cloud)</mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>
-      Outbreak Time
-    </mat-label>
+    <mat-label> Outbreak Time </mat-label>
     <mat-select
       matNativeControle
       [(value)]="outbreakTime"

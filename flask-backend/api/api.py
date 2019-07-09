@@ -90,6 +90,7 @@ class SimulationData(Resource):
         -- PPLACE: Potsdamer Platz
         -- APLACE: Alexanderplatz
         -- OLYMP: Olympiastadion
+        -- PPLACE_CLOUD: Cloud simulation based on P Place
 
         Times:
         -- 12: Monday 12 pm
