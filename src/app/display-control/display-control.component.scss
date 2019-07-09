@@ -1,17 +1,15 @@
-
 ::ng-deep {
-
   .custom-slider {
     margin-left: 16px;
     margin-right: 16px;
     display: flex;
   }
   .custom-slider .ng5-slider .ng5-slider-bar {
-    background: grey;
+    background: black;
     height: 2px;
   }
   .custom-slider .ng5-slider .ng5-slider-selection {
-    background: grey;
+    background: black;
   }
 
   .custom-slider .ng5-slider .ng5-slider-pointer {
@@ -19,11 +17,12 @@
     height: 16px;
     top: auto; /* to remove the default positioning */
     bottom: -5px;
-    background-color: #333;
+    background-color: black;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
+    color: black;
   }
 
   .custom-slider .ng5-slider .ng5-slider-pointer:after {
@@ -32,23 +31,23 @@
 
   .custom-slider .ng5-slider .ng5-slider-bubble {
     bottom: 14px;
+    color: black !important;
   }
 
   .custom-slider .ng5-slider .ng5-slider-limit {
-    font-weight: bold;
     color: black;
   }
 
   .custom-slider .ng5-slider .ng5-slider-tick {
     width: 1px;
     height: 10px;
-    margin-left: 4px;
+    margin-left: 1px;
     border-radius: 0;
     background: black;
     top: -1px;
   }
 
   .custom-slider .ng5-slider .ng5-slider-tick.ng5-slider-selected {
-    background: grey;
+    background: black;
   }
 }

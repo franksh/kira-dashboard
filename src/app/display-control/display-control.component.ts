@@ -10,7 +10,7 @@ import { FormControl } from "@angular/forms";
 import { Subscription } from "rxjs";
 
 import * as _ from "lodash";
-import { Options } from 'ng5-slider';
+import { Options } from "ng5-slider";
 
 import { DisplayTime } from "./display-time";
 import { DisplayControlService } from "../services/display-control.service";
@@ -22,7 +22,10 @@ import { SimulationDataService } from "../services/simulation-data.service";
 @Component({
   selector: "app-display-control",
   templateUrl: "./display-control.component.html",
-  styleUrls: ["./display-control.component.css", "./display-control.component.scss"]
+  styleUrls: [
+    "./display-control.component.css",
+    "./display-control.component.scss"
+  ]
 })
 export class DisplayControlComponent implements OnInit {
   mintime: number = 0;
@@ -38,21 +41,19 @@ export class DisplayControlComponent implements OnInit {
   choroplethactive: boolean;
   selectactive: boolean;
 
-
   options: Options = {
     floor: 0,
-    ceil: 100,
+    ceil: 7 * 24,
     showTicks: true,
     tickStep: 24,
     translate: (value: number): string => {
-          return Math.floor(value / 24) + 'd ' + value % 24 + 'h';
-      },
+      return Math.floor(value / 24) + "d " + (value % 24) + "h";
+    },
     getLegend: (value: number): string => {
-      let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-      return days[Math.floor(value / 24) % 7]
+      let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+      return days[Math.floor(value / 24) % 7] + " " + 12 + ":00";
     }
   };
-
 
   @Output("endLoading") endLoading = new EventEmitter();
 
@@ -78,16 +79,37 @@ export class DisplayControlComponent implements OnInit {
       newOptions.floor = _.first(listts);
 
       this.options = newOptions;
-      this.initiateSubsciptions()
+      this.initiateSubsciptions();
     });
     simulationdataservice.simulationstart$.subscribe(simstart => {
       const newOptions: Options = Object.assign({}, this.options);
       newOptions.getLegend = (value: number): string => {
-      let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+        let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
         let index_first_day = days.indexOf(simstart.weekday);
-        return days[(Math.floor(value / 24) + index_first_day) % 7] +" "+ simstart.timeoftheday + ":00";
-      }
-      this.options = newOptions;});
+        return (
+          days[
+            (Math.floor((value + simstart.timeoftheday) / 24) +
+              index_first_day) %
+              7
+          ] +
+          " " +
+          ("0" + ((value + simstart.timeoftheday) % 24)).slice(-2) +
+          ":00"
+        );
+      };
+
+      let ticksArray = [newOptions.floor];
+      ticksArray = ticksArray.concat(
+        _.range(
+          newOptions.floor + 24 - simstart.timeoftheday,
+          newOptions.ceil,
+          24
+        )
+      );
+      ticksArray.push(newOptions.ceil);
+      newOptions.ticksArray = ticksArray;
+      this.options = newOptions;
+    });
   }
 
   changeTime(ts: number): void {
