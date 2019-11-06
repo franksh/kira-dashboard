@@ -9,3 +9,5 @@ flask-backend/venv/
 
 flask-backend/data/input/*
 flask-backend/data/output/*
+
+node_modules/*
