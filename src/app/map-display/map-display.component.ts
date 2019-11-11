@@ -229,7 +229,7 @@ export class MapDisplayComponent implements AfterViewInit {
     displaycontrolservice.selectedhospitals$.subscribe(hospitals => {
       this.selectedhospitals = hospitals;
       this.hospgeolayers = [];
-      var voronoihospitals = this.shrinkPolygons(dataprocessing.getvoronoihospitals())
+      var voronoihospitals = dataprocessing.getvoronoihospitals()  // this.shrinkPolygons(dataprocessing.getvoronoihospitals())
       var hospitalgeojson = L.geoJSON(voronoihospitals);
       hospitalgeojson.eachLayer(layer => {
         layer.options.color = HOSPITAL_COLORS[layer.feature.properties.name];
@@ -322,12 +322,19 @@ export class MapDisplayComponent implements AfterViewInit {
     }
     this.layertoggle = !this.layertoggle;
   }
-
+  /*
   shrinkPolygons(polygons_input) {
-    var polygons = (JSON.parse(JSON.stringify(polygons_input)));
+    console.log(polygons_input)
+    
+    var polygons = polygons_input //(JSON.parse(JSON.stringify(polygons_input)));
+
     for (let i in polygons.features) {
-      var polygon = lineToPolygon(lineOffset(polygonToLine(polygons.features[i]),0.3));
+      var polygon = polygons.features[i];
+      polygon = polygonToLine(polygon);
+      polygon = lineOffset(polygon,0.3);
+      polygon = lineToPolygon(polygon);
       polygon = unkinkPolygon(polygon);
+      console.log(polygon)
       var max_area = 0;
       var max_idx = 0;
       for (let j in polygon.features) {
@@ -340,4 +347,5 @@ export class MapDisplayComponent implements AfterViewInit {
     }
     return polygons
   }
+  */
 }

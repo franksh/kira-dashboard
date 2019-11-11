@@ -159,8 +159,7 @@ export class DataProcessing {
       }
     }
     var hospitalpoints = points(hospitalcoodinates);
-    var bboxberlin = bbox(this.districtsdata);
-    this.voronoihospitals = voronoi(hospitalpoints, { bbox: bboxberlin });
+    this.voronoihospitals = voronoi(hospitalpoints, {bbox: bbox(this.districtsdata)});
     for (var i in this.hospitallist) {
       var hospitalname = this.hospitallist[i];
       this.voronoihospitals.features[i].properties.name = hospitalname;
