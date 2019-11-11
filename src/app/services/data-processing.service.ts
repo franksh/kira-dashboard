@@ -151,18 +151,19 @@ export class DataProcessing {
 
   initChoropethHosp() {
     var hospitalcoodinates = [];
+    var hospitalnames = []
 
     for (var i in this.hospitaldata) {
       var hospital = this.hospitaldata[i];
       if (this.hospitallist.includes(hospital.properties.name)) {
         hospitalcoodinates.push(hospital.geometry.coordinates);
+        hospitalnames.push(hospital.properties.name);
       }
     }
     var hospitalpoints = points(hospitalcoodinates);
     this.voronoihospitals = voronoi(hospitalpoints, {bbox: bbox(this.districtsdata)});
-    for (var i in this.hospitallist) {
-      var hospitalname = this.hospitallist[i];
-      this.voronoihospitals.features[i].properties.name = hospitalname;
+    for (var i in hospitalnames) {
+      this.voronoihospitals.features[i].properties.name = hospitalnames[i];
     }
 
     var allchoroplethhosp: DistData[][] = [];
