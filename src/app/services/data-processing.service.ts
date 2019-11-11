@@ -205,7 +205,7 @@ export class DataProcessing {
             .map(this.coordsToPolygon)
     );
   }
-  coordsToPolygon(coords): Polygon {
+  coordsToPolygon(coords) {
     coords = coords.slice();
     coords.push(coords[0]);
     return polygon([coords]);
