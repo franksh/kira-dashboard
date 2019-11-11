@@ -7,9 +7,10 @@ import {
   polygon,
   Polygon,
   FeatureCollection,
+  featureCollection,
   GeoJSONObject
 } from "@turf/helpers";
-import voronoi from "@turf/voronoi";
+import * as d3voronoi from 'd3-voronoi';
 import bbox from "@turf/bbox";
 import * as _ from "lodash";
 
@@ -161,7 +162,7 @@ export class DataProcessing {
       }
     }
     var hospitalpoints = points(hospitalcoodinates);
-    this.voronoihospitals = voronoi(hospitalpoints, {bbox: bbox(this.districtsdata)});
+    this.voronoihospitals = this.voronoi(hospitalpoints, bbox(this.districtsdata));
     for (var i in hospitalnames) {
       this.voronoihospitals.features[i].properties.name = hospitalnames[i];
     }
@@ -193,4 +194,22 @@ export class DataProcessing {
       this.simresult.snapshots.find(snaps => snaps.timestamp === ts)
     );
   }
+
+  voronoi(points, bbox): FeatureCollection<Polygon> {
+    return featureCollection(
+        d3voronoi.voronoi()
+            .x(function (feature) { return feature.geometry.coordinates[0]; })
+            .y(function (feature) { return feature.geometry.coordinates[1]; })
+            .extent([[bbox[0], bbox[1]], [bbox[2], bbox[3]]])
+            .polygons(points.features)
+            .map(this.coordsToPolygon)
+    );
+  }
+  coordsToPolygon(coords): Polygon {
+    coords = coords.slice();
+    coords.push(coords[0]);
+    return polygon([coords]);
+  }
 }
+
+
