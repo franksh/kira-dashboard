@@ -640,9 +640,15 @@ class MovementSimulation():
         snapshots_json = self._convert_data_for_dashboard(df)
 
         # Save File
-        filename = "snapshots_{}_N{}_T{}.json".format(
-            LOCNAME, self.N_IND, self.outbreak_time
-        )
+        if LOCNAME == "CUSTOM":
+            # Save File
+            filename = "snapshots_{}_N{}.json".format(
+                LOCNAME, self.N_IND
+            )
+        else:
+            filename = "snapshots_{}_N{}_T{}.json".format(
+                LOCNAME, self.N_IND, self.outbreak_time
+            )
 
         with open(self.data_dir_output + filename, "w") as write_file:
             json.dump(snapshots_json, write_file, indent=2)
