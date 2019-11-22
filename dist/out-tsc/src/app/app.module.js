@@ -4,24 +4,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatFormFieldModule, MatSelectModule, MatTableModule, MatPaginatorModule, MatSortModule, MatCheckboxModule } from '@angular/material';
-import { PlotlyModule } from 'angular-plotly.js';
-import { LayoutModule } from '@angular/cdk/layout';
-import { MapDisplayComponent } from './map-display/map-display.component';
-import { SimControlComponent } from './sim-control/sim-control.component';
-import { MatSliderModule } from '@angular/material';
-import { SimulationResultComponent } from './simulation-result/simulation-result.component';
-import { DisplayControlComponent } from './display-control/display-control.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DrawMapComponent } from './draw-map/draw-map.component';
-import { TableDistrictsComponent } from './table-districts/table-districts.component';
-import { TimecoursePlotComponent } from './timecourse-plot/timecourse-plot.component';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatFormFieldModule, MatSelectModule, MatTableModule, MatPaginatorModule, MatSortModule, MatCheckboxModule, MatDividerModule, MatListModule, MatButtonToggleModule, MatToolbarModule, MatExpansionModule, MatSliderModule, MatProgressSpinnerModule } from "@angular/material";
+import { LayoutModule } from "@angular/cdk/layout";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { LeafletModule } from "@asymmetrik/ngx-leaflet";
+import { PlotlyModule } from "angular-plotly.js";
+import { Ng5SliderModule } from 'ng5-slider';
+import { AppComponent } from "./app.component";
+import { DashboardComponent } from "./dashboard/dashboard.component";
+import { MapDisplayComponent } from "./map-display/map-display.component";
+import { DisplayControlComponent } from "./display-control/display-control.component";
+import { TableDistrictsComponent } from "./table-districts/table-districts.component";
+import { TimecoursePlotComponent } from "./timecourse-plot/timecourse-plot.component";
+import { TimecoursePlotIndividualComponent } from "./timecourse-plot-individual/timecourse-plot-individual.component";
+import { HttpModule } from "@angular/http";
+import { HeaderInfoComponent } from "./header-info/header-info.component";
+import { ProgressSpinnerComponent } from "./progress-spinner/progress-spinner.component";
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -31,15 +32,16 @@ var AppModule = /** @class */ (function () {
                 AppComponent,
                 DashboardComponent,
                 MapDisplayComponent,
-                SimControlComponent,
-                SimulationResultComponent,
                 DisplayControlComponent,
-                DrawMapComponent,
                 TableDistrictsComponent,
-                TimecoursePlotComponent
+                TimecoursePlotComponent,
+                TimecoursePlotIndividualComponent,
+                HeaderInfoComponent,
+                ProgressSpinnerComponent
             ],
             imports: [
                 BrowserModule,
+                HttpModule,
                 BrowserAnimationsModule,
                 MatGridListModule,
                 MatCardModule,
@@ -56,8 +58,15 @@ var AppModule = /** @class */ (function () {
                 MatPaginatorModule,
                 MatSortModule,
                 MatCheckboxModule,
+                MatDividerModule,
+                MatListModule,
+                MatButtonToggleModule,
+                MatToolbarModule,
+                MatExpansionModule,
+                MatProgressSpinnerModule,
                 PlotlyModule,
-                LeafletModule.forRoot()
+                LeafletModule.forRoot(),
+                Ng5SliderModule,
             ],
             providers: [],
             bootstrap: [AppComponent]

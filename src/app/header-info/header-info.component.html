@@ -1,41 +1,96 @@
 <mat-card-header>
   <mat-card-title> KIRA Dashboard </mat-card-title>
 </mat-card-header>
+
 <mat-card-content>
   The dashboard shows the simulated movement of individuals from an outbreak
   location.
 </mat-card-content>
 
+
+
+
 <mat-card>
-  <mat-form-field>
-    <mat-label> Outbreak Location </mat-label>
-    <mat-select
-      matNativeControle
-      [(value)]="outbreakPlace"
-      (selectionChange)="outbreakLocationChange($event)"
-    >
-      <mat-option value="PPLACE">Potsdamer Platz</mat-option>
-      <mat-option value="APLACE">Alexanderplatz</mat-option>
-      <mat-option value="OLYMP">Olympiastadion</mat-option>
-      <mat-option value="PPLACE_CLOUD">Potsdamer Platz (Cloud)</mat-option>
-    </mat-select>
-  </mat-form-field>
 
-  <mat-form-field>
-    <mat-label> Outbreak Time </mat-label>
-    <mat-select
-      matNativeControle
-      [(value)]="outbreakTime"
-      (selectionChange)="outbreakLocationChange($event)"
-    >
-      <mat-option value="12">Monday 12pm</mat-option>
-      <mat-option value="138">Saturday 18pm</mat-option>
-    </mat-select>
-  </mat-form-field>
+  <div fxLayoutAlign="start stretch" fxLayoutGap="8px" class="control-toolbar">
 
-  <mat-card-actions>
-    <button mat-raised-button (click)="updateScenario()">
-      Update Scenario
-    </button>
-  </mat-card-actions>
+    <div class="elem-margin">
+      <mat-form-field>
+        <mat-label> Outbreak Location </mat-label>
+        <mat-select matNativeControl [(value)]="selectedScenario.outbreakLocation" (selectionChange)="outbreakLocationChange($event)">
+          <mat-option *ngFor="let locationOption of locationOptions" [value]="locationOption.locationValue">
+          {{locationOption.optionName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+      <mat-form-field>
+        <mat-label> Outbreak Time </mat-label>
+        <mat-select matNativeControl [(value)]="selectedScenario.outbreakTime" [disabled]="selectedScenario.isCustom">
+          <mat-option *ngFor="let timeOption of fixedTimeOptions" [value]="timeOption.timeValue">
+          {{timeOption.optionName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-card-actions>
+        <button mat-raised-button (click)="updateScenario()">
+          Update Scenario
+        </button>
+      </mat-card-actions>
+    </div>
+
+    <mat-divider [vertical]="true"></mat-divider>
+
+    <div class="elem-margin">
+      <mat-form-field>
+        <input matInput placeholder="longitude" [formControl]="longFormControl">
+        <mat-error *ngIf="longFormControl.hasError('min') || longFormControl.hasError('max') && !longFormControl.hasError('pattern')">
+          Please enter a number between {{long_low}} and {{long_high}}
+        </mat-error>
+        <mat-error *ngIf="longFormControl.hasError('pattern')">
+          Please enter a valid number
+        </mat-error>
+      </mat-form-field>
+
+      
+
+      <mat-form-field>
+        <mat-label> Day of the Week </mat-label>
+        <mat-select matNativeControl [(value)]="simulationStart.weekday">
+          <mat-option *ngFor="let dayOption of dayOptions" [value]="dayOption.dayValue">
+          {{dayOption.optionName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+        <mat-form-field>
+        <mat-label> Hour of the day </mat-label>
+        <mat-select matNativeControl [(value)]="simulationStart.timeoftheday">
+          <mat-option *ngFor="let hourOption of hourOptions" [value]="hourOption">
+          {{hourOption}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="latitude" [formControl]="latFormControl">
+        <mat-error *ngIf="(latFormControl.hasError('min') || latFormControl.hasError('max')) && !latFormControl.hasError('pattern')">
+          Please enter a number between {{lat_low}} and {{lat_high}}
+        </mat-error>
+        <mat-error *ngIf="latFormControl.hasError('pattern')">
+          Please enter a valid number
+        </mat-error>
+      </mat-form-field>
+
+      <mat-card-actions>
+        <button mat-raised-button>
+          Submit Scenario
+        </button>
+      </mat-card-actions>
+    </div>
+
+  </div>
+
 </mat-card>

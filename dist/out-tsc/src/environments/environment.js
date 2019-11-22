@@ -2,7 +2,11 @@
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 export var environment = {
-    production: false
+    production: false,
+    logging: true,
+    apiEndpoint: 
+    // "http://localhost:4200/assets/data/Simulation_results_N100_T76.json"
+    "http://localhost:5000/"
 };
 /*
  * In development mode, for easier debugging, you can ignore zone related error

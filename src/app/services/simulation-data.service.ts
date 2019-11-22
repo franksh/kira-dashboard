@@ -48,6 +48,10 @@ export class SimulationDataService {
     this.simulationstartSource.next(simstart);
   }
 
+  requestSimulation(latitute:number, longitute: number, time: SimulationStart){
+    // todo
+  }
+
   changeOutbreakLocation(outbreakLocation: string) {
     this.loadSimulationData(outbreakLocation);
   }

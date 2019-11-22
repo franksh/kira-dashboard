@@ -20,7 +20,8 @@ import {
   MatToolbarModule,
   MatExpansionModule,
   MatSliderModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatInputModule
 } from "@angular/material";
 import { LayoutModule } from "@angular/cdk/layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -80,6 +81,7 @@ import { ProgressSpinnerComponent } from "./progress-spinner/progress-spinner.co
     PlotlyModule,
     LeafletModule.forRoot(),
     Ng5SliderModule,
+    MatInputModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
