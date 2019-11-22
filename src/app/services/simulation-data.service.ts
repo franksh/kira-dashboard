@@ -49,7 +49,18 @@ export class SimulationDataService {
   }
 
   requestSimulation(latitute:number, longitute: number, time: SimulationStart){
-    // todo
+    let dataPath =
+      environment.apiEndpoint +
+      "run" +
+      "?lat=" +
+      latitute +
+      "&lon=" +
+      longitute +
+      "&times=" +
+      time.getabsolutehours();
+    this.http.get(dataPath).subscribe(response => {
+      console.log("requested simulation")
+    });
   }
 
   changeOutbreakLocation(outbreakLocation: string) {

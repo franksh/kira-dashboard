@@ -1,3 +1,6 @@
+
+import {indexOf} from "lodash";
+
 export class SimSnapshot{
   timestamp: number;
   points: number[][];
@@ -17,5 +20,10 @@ export class SimulationStart {
 	constructor(weekday: string, timeoftheday: number) {
 		this.timeoftheday=timeoftheday
 		this.weekday=weekday
+	};
+	getabsolutehours() {
+		let dayoftheweekHours = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+		let hourvalueday = indexOf(dayoftheweekHours, this.weekday) * 24
+		return hourvalueday + this.timeoftheday
 	};
 }
