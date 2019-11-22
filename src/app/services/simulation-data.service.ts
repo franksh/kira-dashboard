@@ -56,7 +56,7 @@ export class SimulationDataService {
       latitute +
       "&lon=" +
       longitute +
-      "&times=" +
+      "&time=" +
       time.getabsolutehours();
     this.http.get(dataPath).subscribe(response => {
       console.log("requested simulation")
