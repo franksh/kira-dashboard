@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import {ErrorStateMatcher} from '@angular/material/core';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import { MatSelectChange } from "@angular/material";
+import { Observable, Subject, from, interval } from "rxjs";
 
 import { SimulationDataService } from "../services/simulation-data.service";
 import { DisplayControlService } from "../services/display-control.service";
@@ -87,12 +88,22 @@ export class HeaderInfoComponent implements OnInit {
     ]);
   matcher = new MyErrorStateMatcher();
   
+  query_loading = false;
+
+  task_id: string;
+  requestisrunning = false;
+
+  check_status_intervall = interval(3000);
+  check_status = this.check_status_intervall.subscribe(val => this.checkStatus());
 
   @Output("startLoading") startLoading = new EventEmitter();
 
   constructor(
     private simulationdataservice: SimulationDataService,
-  ) {}
+  ) {
+    this.simulationdataservice.taskid$.subscribe(taskid => {this.task_id = taskid});
+    this.simulationdataservice.submittedscenarioloading$.subscribe(isloading => {this.query_loading = isloading})
+  }
  
 
   ngOnInit() {}
@@ -117,10 +128,17 @@ export class HeaderInfoComponent implements OnInit {
   }
 
   submitScenario() {
-    console.log("formsubmit")
-    this.simulationdataservice.requestSimulation(
-      Number(this.latFormControl.value), 
-      Number(this.longFormControl.value), 
-      this.simulationStart)
+    if (!this.query_loading) {
+      this.simulationdataservice.requestSimulation(
+        Number(this.latFormControl.value), 
+        Number(this.longFormControl.value), 
+        this.simulationStart)
+    }
+  }
+
+  checkStatus() {
+    if (this.query_loading){
+        this.simulationdataservice.checkSimulationTask(this.task_id);
+    }
   }
 }

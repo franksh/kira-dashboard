@@ -20,7 +20,7 @@
 }
 
 mat-divider {
-  height: 144px;
+  height: 200px;
   margin-left: 8px;
   margin-right: 8px;
 }
@@ -28,4 +28,13 @@ mat-divider {
 .basic-container {
   padding: 8px;
   min-height: 32px;
+}
+
+.loading-container {
+	padding: 8px;
+	min-height: 24px;
+}
+
+mat-progress-bar {
+	margin-top: 8pt;
 }

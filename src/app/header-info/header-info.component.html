@@ -10,7 +10,7 @@
 
 
 
-<mat-card>
+<div>
 
   <div fxLayoutAlign="start stretch" fxLayoutGap="8px" class="control-toolbar">
 
@@ -85,12 +85,19 @@
       </mat-form-field>
 
       <mat-card-actions>
-        <button mat-raised-button (click)="submitScenario()">
+        <button mat-raised-button (click)="submitScenario()" [disabled]="query_loading">
           Submit Scenario
         </button>
       </mat-card-actions>
+
+      <div class="loading-container" >
+        <mat-progress-bar   mode="buffer" *ngIf="query_loading" color="accent"></mat-progress-bar>
+      </div>
     </div>
 
   </div>
 
-</mat-card>
+
+
+
+</div>

@@ -1,5 +1,5 @@
 import { Injectable, Output, EventEmitter } from "@angular/core";
-import { Observable, Subject, from } from "rxjs";
+import { Observable, Subject, from, interval } from "rxjs";
 import { Http, Response } from "@angular/http";
 import { map, switchMap } from "rxjs/operators";
 
@@ -17,6 +17,10 @@ export class SimulationDataService {
   listts$ = this.listtsSource.asObservable();
   simulationstartSource = new Subject<SimulationStart>();
   simulationstart$ = this.simulationstartSource.asObservable();
+  submittedscenarioloadingSource = new Subject<boolean>();
+  submittedscenarioloading$ = this.submittedscenarioloadingSource.asObservable();
+  taskidSource  = new Subject<string>();
+  taskid$ = this.taskidSource.asObservable();
 
   // Load actual simulation data
   // stored in assets/data
@@ -48,7 +52,7 @@ export class SimulationDataService {
     this.simulationstartSource.next(simstart);
   }
 
-  requestSimulation(latitute:number, longitute: number, time: SimulationStart){
+  requestSimulation(latitute:number, longitute: number, time: SimulationStart) {
     let dataPath =
       environment.apiEndpoint +
       "run" +
@@ -59,7 +63,20 @@ export class SimulationDataService {
       "&time=" +
       time.getabsolutehours();
     this.http.get(dataPath).subscribe(response => {
-      console.log("requested simulation")
+      this.taskidSource.next(response.text().slice(1, -2))
+      this.submittedscenarioloadingSource.next(true);
+    })
+  }
+
+  checkSimulationTask(task_id: string) {
+    let taskPath = 
+      environment.apiEndpoint +
+      "status/" +
+      task_id;
+    this.http.get(taskPath).subscribe(response => {
+      if (response.status != 202) {
+        this.submittedscenarioloadingSource.next(false);
+      }
     });
   }
 
@@ -69,5 +86,6 @@ export class SimulationDataService {
 
   constructor(private http: Http) {
     this.loadSimulationData();
+    this.submittedscenarioloadingSource.next(false);
   }
 }

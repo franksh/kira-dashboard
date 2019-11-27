@@ -97,7 +97,7 @@ def async_api(wrapped_function):
         # Return a 202 response, with a link that the client can use to
         # obtain task status
         print(url_for('gettaskstatus', task_id=task_id))
-        return 'accepted', 202, {'Location': url_for('gettaskstatus', task_id=task_id)}
+        return task_id, 202, {'Location': url_for('gettaskstatus', task_id=task_id)}
     return new_function
 
 
