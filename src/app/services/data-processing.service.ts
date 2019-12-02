@@ -173,7 +173,7 @@ export class DataProcessing {
       var snapshot: SimSnapshot = this.simresult.snapshots[i];
       var ts = snapshot.timestamp;
       var choropleth = this.computeChoroplethHosp(
-        this.hospitallist,
+        hospitalnames,
         this.voronoihospitals,
         snapshot
       );
