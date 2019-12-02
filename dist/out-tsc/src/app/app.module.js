@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatFormFieldModule, MatSelectModule, MatTableModule, MatPaginatorModule, MatSortModule, MatCheckboxModule, MatDividerModule, MatListModule, MatButtonToggleModule, MatToolbarModule, MatExpansionModule, MatSliderModule, MatProgressSpinnerModule } from "@angular/material";
+import { MatGridListModule, MatCardModule, MatMenuModule, MatIconModule, MatButtonModule, MatFormFieldModule, MatSelectModule, MatTableModule, MatPaginatorModule, MatSortModule, MatCheckboxModule, MatDividerModule, MatListModule, MatButtonToggleModule, MatToolbarModule, MatExpansionModule, MatSliderModule, MatProgressSpinnerModule, MatInputModule, MatProgressBarModule, } from "@angular/material";
 import { LayoutModule } from "@angular/cdk/layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { LeafletModule } from "@asymmetrik/ngx-leaflet";
@@ -67,6 +67,8 @@ var AppModule = /** @class */ (function () {
                 PlotlyModule,
                 LeafletModule.forRoot(),
                 Ng5SliderModule,
+                MatInputModule,
+                MatProgressBarModule,
             ],
             providers: [],
             bootstrap: [AppComponent]

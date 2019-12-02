@@ -14,7 +14,7 @@ import { DisplayTime } from "./display-time";
 import { DisplayControlService } from "../services/display-control.service";
 import { DataProcessing } from "../services/data-processing.service";
 import { DISTRICTSDATA } from "../berlin-bezirke-simpl";
-import { HOSPITALLIST_EMERGENCYCENTER } from "../hospitals-berlin";
+import { HOSPITALLIST_EMERGENCYHOSPITAL } from "../hospitals-berlin";
 import { SimulationDataService } from "../services/simulation-data.service";
 var DisplayControlComponent = /** @class */ (function () {
     function DisplayControlComponent(displaycontrolservice, dataprocessing, simulationdataservice, cdr) {
@@ -29,6 +29,7 @@ var DisplayControlComponent = /** @class */ (function () {
         this.districtlist = this.getAllDistricts();
         this.selecteddistricts = ["None"];
         this.numseldist = 0;
+        this.hospitallist = HOSPITALLIST_EMERGENCYHOSPITAL;
         this.options = {
             floor: 0,
             ceil: 7 * 24,
@@ -102,8 +103,8 @@ var DisplayControlComponent = /** @class */ (function () {
     };
     DisplayControlComponent.prototype.getAllHospitals = function () {
         var hospitallist = [];
-        for (var i in HOSPITALLIST_EMERGENCYCENTER) {
-            hospitallist.push(HOSPITALLIST_EMERGENCYCENTER[i]);
+        for (var i in this.hospitallist) {
+            hospitallist.push(this.hospitallist[i]);
         }
         return hospitallist;
     };

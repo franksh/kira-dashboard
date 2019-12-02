@@ -18,7 +18,7 @@ import { SimSnapshot, SimulationResult } from "./simulation-result";
 import { DisplayTime } from "../display-control/display-time";
 import { DisplayControlService } from "./display-control.service";
 import { DISTRICTSDATA } from "../berlin-bezirke-simpl";
-import { HOSPITALDATA, HOSPITALLIST_EMERGENCYCENTER } from "../hospitals-berlin";
+import { HOSPITALDATA, HOSPITALLIST_EMERGENCYCENTER, HOSPITALLIST_EMERGENCYHOSPITAL } from "../hospitals-berlin";
 import { SIMMOCKUP } from "./simulation-result-mockup-2";
 import { SimulationDataService } from "./simulation-data.service";
 
@@ -39,7 +39,7 @@ export class DataProcessing {
   simresult: SimulationResult;
   districtsdata = DISTRICTSDATA;
   hospitaldata = HOSPITALDATA;
-  hospitallist = HOSPITALLIST_EMERGENCYCENTER;
+  hospitallist = HOSPITALLIST_EMERGENCYHOSPITAL;
 
   maxvaluechoroplethdists: number;
   maxvaluechoroplethhosp: number;

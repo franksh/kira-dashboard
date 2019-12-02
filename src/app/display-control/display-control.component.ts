@@ -38,6 +38,8 @@ export class DisplayControlComponent implements OnInit {
   numseldist: number = 0;
   subdistricts: Subscription;
 
+  hospitallist = HOSPITALLIST_EMERGENCYHOSPITAL; 
+
   choroplethactive: boolean;
   selectactive: boolean;
 
@@ -141,8 +143,8 @@ export class DisplayControlComponent implements OnInit {
 
   getAllHospitals(): string[] {
     var hospitallist = [];
-    for (var i in HOSPITALLIST_EMERGENCYCENTER) {
-      hospitallist.push(HOSPITALLIST_EMERGENCYCENTER[i]);
+    for (var i in this.hospitallist) {
+      hospitallist.push(this.hospitallist[i]);
     }
     return hospitallist;
   }
