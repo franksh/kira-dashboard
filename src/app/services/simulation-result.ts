@@ -17,9 +17,23 @@ export class SimulationResult {
 export class SimulationStart {
 	timeoftheday: number
 	weekday: string // from ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-	constructor(weekday: string, timeoftheday: number) {
-		this.timeoftheday=timeoftheday
-		this.weekday=weekday
+	constructor(hour: number, weekday?: string) {
+		if (weekday) {
+			this.timeoftheday=hour
+			this.weekday=weekday
+		}
+		else {
+			if (hour<24*7 && hour>0) {
+				let daysoftheweek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]; 
+				this.weekday = daysoftheweek[Math.floor(hour/24)]; 
+				this.timeoftheday = hour % 24
+			}
+			else {
+				Error("invalid time of the week");
+			}
+			
+		}
+		
 	};
 	getabsolutehours() {
 		let dayoftheweekHours = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]

@@ -66,7 +66,7 @@ export class HeaderInfoComponent implements OnInit {
     {optionName: "Sunday", dayValue: "Sun"},
   ];
   hourOptions: number[] = Array(24).fill(undefined).map((v,i)=>i) // this is js for range(1,25) WHY?? 
-  simulationStart: SimulationStart = new SimulationStart("Mon",1);
+  simulationStart: SimulationStart = new SimulationStart(1);
   long_low = 13.0 // all rough guesses about wath makes sense
   long_high = 13.8
   lat_low = 52.3

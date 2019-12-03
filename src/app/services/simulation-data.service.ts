@@ -35,6 +35,7 @@ export class SimulationDataService {
     this.http.get(dataPath).subscribe(response => {
       console.log("updating simulationresult");
       let simResult = new SimulationResult(response.json());
+      console.log(simResult.snapshots[0].timestamp)
       this.simulationresultSource.next(simResult);
       let listts: number[] = [];
       for (var i in simResult.snapshots) {
@@ -42,13 +43,9 @@ export class SimulationDataService {
       }
       this.listtsSource.next(listts);
     });
-    let simstart;
-    if (outbreakTime == "12") {
-      simstart = new SimulationStart("Mon", 12);
-    }
-    if (outbreakTime == "138") {
-      simstart = new SimulationStart("Sat", 18);
-    }
+
+
+    let simstart = new SimulationStart(parseInt(outbreakTime));
     this.simulationstartSource.next(simstart);
   }
 
