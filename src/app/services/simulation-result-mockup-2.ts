@@ -1,6 +1,7 @@
 import { SimSnapshot, SimulationResult } from './simulation-result';
 
 export const SIMMOCKUP: SimulationResult = {
+  timeStart: 1,
   snapshots:
   [
     {

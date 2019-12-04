@@ -645,6 +645,11 @@ class MovementSimulation():
             filename = "snapshots_{}_N{}.json".format(
                 LOCNAME, self.N_IND
             )
+            # Sve outbreak time seperately
+            outbreak_time_filename = "custom_outbreak_time.json"
+            with open(self.data_dir_output + outbreak_time_filename, "w") as write_file:
+                json.dump({"outbreak_time": self.outbreak_time}, write_file, indent=2)
+
         else:
             filename = "snapshots_{}_N{}_T{}.json".format(
                 LOCNAME, self.N_IND, self.outbreak_time

@@ -19,7 +19,7 @@ export class SimulationDataService {
   simulationstart$ = this.simulationstartSource.asObservable();
   submittedscenarioloadingSource = new Subject<boolean>();
   submittedscenarioloading$ = this.submittedscenarioloadingSource.asObservable();
-  taskidSource  = new Subject<string>();
+  taskidSource = new Subject<string>();
   taskid$ = this.taskidSource.asObservable();
 
   // Load actual simulation data
@@ -31,25 +31,35 @@ export class SimulationDataService {
       outbreakLocation +
       "&time=" +
       outbreakTime;
+    let timeStart;
     console.log("Fetching data: ", dataPath);
     this.http.get(dataPath).subscribe(response => {
       console.log("updating simulationresult");
-      let simResult = new SimulationResult(response.json());
-      console.log(simResult.snapshots[0].timestamp)
+      let simResult = new SimulationResult(
+        response.json().simSnapshot,
+        response.json().timeStart
+      );
       this.simulationresultSource.next(simResult);
+      timeStart = simResult.timeStart;
       let listts: number[] = [];
       for (var i in simResult.snapshots) {
         listts.push(simResult.snapshots[i].timestamp);
       }
       this.listtsSource.next(listts);
+
+      console.log(timeStart);
+      let simstart = new SimulationStart(timeStart);
+      this.simulationstartSource.next(simstart);
     });
 
-
-    let simstart = new SimulationStart(parseInt(outbreakTime));
-    this.simulationstartSource.next(simstart);
+    // let simstart = new SimulationStart(parseInt(outbreakTime));
   }
 
-  requestSimulation(latitute:number, longitute: number, time: SimulationStart) {
+  requestSimulation(
+    latitute: number,
+    longitute: number,
+    time: SimulationStart
+  ) {
     let dataPath =
       environment.apiEndpoint +
       "run" +
@@ -60,16 +70,13 @@ export class SimulationDataService {
       "&time=" +
       time.getabsolutehours();
     this.http.get(dataPath).subscribe(response => {
-      this.taskidSource.next(response.text().slice(1, -2))
+      this.taskidSource.next(response.text().slice(1, -2));
       this.submittedscenarioloadingSource.next(true);
-    })
+    });
   }
 
   checkSimulationTask(task_id: string) {
-    let taskPath = 
-      environment.apiEndpoint +
-      "status/" +
-      task_id;
+    let taskPath = environment.apiEndpoint + "status/" + task_id;
     this.http.get(taskPath).subscribe(response => {
       if (response.status != 202) {
         this.submittedscenarioloadingSource.next(false);
