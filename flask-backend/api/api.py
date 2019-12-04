@@ -160,7 +160,19 @@ class SimulationData(Resource):
         if not snapshots:
             snapshots = self.load_default_data()
 
-        return snapshots
+        # Load outbreak time
+        if name == 'CUSTOM':
+            outbreakTime = self.get_custom_outbreak_time()
+        else:
+            outbreakTime = int(time)
+
+        # Compose full response
+        response = {
+            'simSnapshot': snapshots,
+            'timeStart': outbreakTime
+        }
+
+        return response
 
     ## DATA INPUT / OUTPUT ###############################
 
@@ -222,6 +234,14 @@ class SimulationData(Resource):
         " Log a message "
         if self.VERBOSE:
             print(msg)
+
+    def get_custom_outbreak_time(self):
+        """ Reads the outbreak time for the custom scenario """
+        file_path = self.DATA_PATH + 'custom_outbreak_time.json'
+        with open(file_path, 'r') as read_file:
+            outbreak_json = json.load(read_file)
+        outbreak_time = int(outbreak_json['outbreak_time'])
+        return outbreak_time
 
 
 class SimulationRun(Resource):
